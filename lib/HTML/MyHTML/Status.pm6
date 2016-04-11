@@ -1,4 +1,6 @@
-unit enum HTML::MyHTML::Status(
+unit module HTML::MyHTML::Status;
+
+enum MyHTMLStatus is export (
   MyHTML_STATUS_OK                                   => 0,
   MyHTML_STATUS_ERROR_MEMORY_ALLOCATION              => 1,
   MyHTML_STATUS_THREAD_ERROR_LIST_INIT               => 10,
@@ -34,3 +36,14 @@ unit enum HTML::MyHTML::Status(
   MyHTML_STATUS_ATTR_ERROR_ALLOCATION                => 600,
   MyHTML_STATUS_ATTR_ERROR_CREATE                    => 601
 );
+
+sub status(Int $enum) is export {
+  MyHTMLStatus.enums.invert.Hash{$enum};
+}
+
+=for DEBUGGING
+CHECK {
+  say status(0);
+  exit 1;
+  # %status{61}.say;
+}

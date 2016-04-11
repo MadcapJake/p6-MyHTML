@@ -4,7 +4,7 @@ use NativeCall;
 
 use HTML::MyHTML::Lib;
 
-enum HTML::MyHTML::Encoding is export (
+enum MyHTMLEncoding is export (
     MyHTML_ENCODING_DEFAULT          => 0x00,
     MyHTML_ENCODING_AUTO             => 0x01, # future
     MyHTML_ENCODING_CUSTOM           => 0x02, # future
@@ -44,6 +44,11 @@ enum HTML::MyHTML::Encoding is export (
     MyHTML_ENCODING_X_MAC_CYRILLIC   => 0x24,
     MyHTML_ENCODING_LAST_ENTRY       => 0x25
 );
+
+#| Convert Int to Enum
+sub Enc(Int $enum) returns MyHTMLEncoding is export {
+  MyHTMLEncoding.enums.invert.Hash{$enum};
+}
 
 #| Convert Unicode Codepoint to UTF-8
 #|
@@ -171,7 +176,17 @@ sub myhtml_encoding_detect_and_cut_bom(CArray[uint8], size_t, int32 is rw, CArra
     is native(&lib)
     { * }
 
-sub detect-and-cut-bom(Str $text, $enc is rw, $pos is rw, $size is rw) is export {
+sub detect-and-cut-bom(
+  Str:D  $text,  #= Text to be detected and cut
+  Bool  :$hash   #= Whether to return Bool or the details
+) is export {
   my CArray[uint8] $chs .= new: $text.encode.list;
-  myhtml_encoding_detect_and_cut_bom($chs, $enc, $pos, $size);
+  my ($enc, $pos, $size);
+  my bool $res = myhtml_encoding_detect_and_cut_bom($chs, $enc, $pos, $size);
+  $hash.defined ?? {
+    res  => ?$res,
+    enc  => Enc($enc),
+    pos  => +$pos,
+    size => +$size
+  } !! $res;
 }
