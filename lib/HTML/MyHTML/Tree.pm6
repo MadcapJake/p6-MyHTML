@@ -7,12 +7,13 @@ use HTML::MyHTML::Encoding;
 use HTML::MyHTML::Lib;
 use HTML::MyHTML::Status;
 use HTML::MyHTML::Tag;
+use HTML::MyHTML::Index;
 
 class FILE is repr('CPointer') {}
 class MCharAsync is repr('CPointer') {}
 class MyHTML is repr('CStruct') {}
 # class MyHTMLTag is repr('CPointer') {}
-class MyHTMLTagIndex is repr('CPointer') {}
+# class MyHTMLTagIndex is repr('CPointer') {}
 class MyHTMLTreeNode is repr('CPointer') {}
 
 class TreeDocType is repr('CStruct') {
@@ -54,7 +55,7 @@ has Pointer #`{myhtml_tree_node_t*}     $.node_head;
 has Pointer #`{myhtml_tree_node_t*}     $.node_html;
 has Pointer #`{myhtml_tree_node_t*}     $.node_body;
 has Pointer #`{myhtml_tree_node_t*}     $.node_form;
-has TreeDocType                         $.doctype;
+HAS TreeDocType                         $.doctype;
 
 # for build tree
 has Pointer #`{myhtml_tree_list_t*}           $.active_formatting;
@@ -99,8 +100,7 @@ sub myhtml_tree_init(Tree, MyHTML) is native(&lib) returns int32 {*}
 
 method new(\myhtml) {
   my \mytree := myhtml_tree_create();
-  say 'tree created';
-  say status myhtml_tree_init(mytree, myhtml);
+  debug status myhtml_tree_init(mytree, myhtml);
   return mytree;
 }
 
