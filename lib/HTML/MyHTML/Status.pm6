@@ -37,7 +37,7 @@ enum MyHTMLStatus is export (
   MyHTML_STATUS_ATTR_ERROR_CREATE                    => 601
 );
 
-sub status(Int $enum) is export {
+sub status(int32 $enum) is export {
   MyHTMLStatus.enums.invert.Hash{$enum};
 }
 
