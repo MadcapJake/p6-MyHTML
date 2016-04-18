@@ -103,12 +103,8 @@ class MyHTML is repr('CStruct') is export {
       { * }
 
   method new(MyHTMLOptions :$opt, int64 :$threads, int64 :$queue) {
-    'building native MyHTML...'.say;
     my MyHTML $p := myhtml_create();
-
-    say status myhtml_init($p, $opt, $threads // 1, $queue // 4096);
-
-    'MyHTML initialized!'.say;
+    debug status myhtml_init($p, $opt, $threads // 1, $queue // 4096);
     return $p;
   }
 
@@ -186,7 +182,7 @@ class MyHTML is repr('CStruct') is export {
       { * }
 
   multi method parse(Str $html, :$tree, :$single, MyHTMLEncoding :$enc) {
-    my CArray[uint8] $chs .= new: $html.encode.list;
+    my CArray[uint] $chs .= new: $html.encode.list;
     myhtml_parse_single($tree, $enc // 0, $chs, $chs.elems);
   }
 
@@ -210,7 +206,7 @@ class MyHTML is repr('CStruct') is export {
 
   multi method parse(Str $html, :$tree, :$fragment, :$single,
                      MyHTMLTagType :$base, MyHTMLNamespace :$ns, MyHTMLEncoding :$enc) {
-    my CArray[uint8] $chs = $html.encode.list;
+    my CArray[uint] $chs = $html.encode.list;
     myhtml_parse_fragment_single($tree, $enc // 0, $chs, $chs.elems, $base // 0, $ns // 0);
   }
 
@@ -227,7 +223,7 @@ class MyHTML is repr('CStruct') is export {
       { * }
 
   multi method parse(Str $html, :$tree, :$chunk) {
-    my CArray[uint8] $chs .= new: $html.encode.list;
+    my CArray[uint] $chs .= new: $html.encode.list;
     myhtml_parse_chunk($tree, $chs, $chs.elems);
   }
 
@@ -247,7 +243,7 @@ class MyHTML is repr('CStruct') is export {
 
   multi method parse(Str $html, :$tree, :$fragment, :$chunk,
                      MyHTMLTagType :$base, MyHTMLNamespace :$ns) {
-    my CArray[uint8] $chs = $html.encode.list;
+    my CArray[uint] $chs = $html.encode.list;
     myhtml_parse_chunk_fragment($tree, $chs, $chs.elems, $base // 0, $ns // 0);
   }
 
@@ -265,7 +261,7 @@ class MyHTML is repr('CStruct') is export {
       { * }
 
   multi method parse(Str $html, :$tree, :$chunk, :$single) {
-    my CArray[uint8] $chs .= new: $html.encode.list;
+    my CArray[uint] $chs .= new: $html.encode.list;
     myhtml_parse_chunk_single($tree, $chs, $chs.elems);
   }
 
@@ -286,7 +282,7 @@ class MyHTML is repr('CStruct') is export {
 
   multi method parse(Str $html, :$tree, :$fragment, :$chunk, :$single,
                      MyHTMLTagType :$base, MyHTMLNamespace :$ns) {
-    my CArray[uint8] $chs .= new: $html.encode.list;
+    my CArray[uint] $chs .= new: $html.encode.list;
     myhtml_parse_chunk_fragment_single($tree, $chs, $chs.elems, $base // 0, $ns // 0);
   }
 
