@@ -102,7 +102,7 @@ class MyHTML is repr('CStruct') is export {
       is native(&lib)
       { * }
 
-  submethod BUILD(MyHTMLOptions :$opt, int64 :$threads, int64 :$queue) {
+  method new(MyHTMLOptions :$opt, int64 :$threads, int64 :$queue) {
     'building native MyHTML...'.say;
     my MyHTML $p := myhtml_create();
 
