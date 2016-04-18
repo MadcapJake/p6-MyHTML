@@ -9,20 +9,12 @@ class HTML::MyHTML is export {
   has Tree $.tree is rw;
 
   submethod BUILD {
-    say 'building now...';
-    try {
-      $!myhtml = MyHTML.new :opt(PARSE_MODE_SEPARATELY);
-      say 'myhtml initialized!';
-      $!tree = Tree.new: $!myhtml;
-      CATCH {
-        default { say $_ }
-      }
-    }
-    say 'building done!'
+    $!myhtml = MyHTML.new :opt(PARSE_MODE_SEPARATELY);
+    $!tree = Tree.new: $!myhtml;
   }
 
-  method clean { $!myhtml.clean; $!tree.clean }
-  method dispose { $!myhtml.dispose; $!tree.dispose }
+  method clean { $!tree.clean; $!myhtml.clean }
+  method dispose { $!tree.dispose; $!myhtml.dispose }
   multi method parse($html, :$enc) {
     $!myhtml.parse: $html, :$!tree, :$enc
   }
