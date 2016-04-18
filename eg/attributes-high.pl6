@@ -5,8 +5,11 @@ use HTML::MyHTML;
 
 my $html = "<div></div>";
 
-say 'running now...';
 my HTML::MyHTML $myhtml .= new;
-say $myhtml.parse: $html, :fragment;
+
+$myhtml.parse($html, :fragment);
+
+my $tag-index = $myhtml.tree.tag-index;
+my $tag-index-node =
 
 $myhtml.dispose;
