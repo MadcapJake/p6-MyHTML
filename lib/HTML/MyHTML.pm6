@@ -23,17 +23,21 @@ class HTML::MyHTML is export {
 
   method clean { $!myhtml.clean; $!tree.clean }
   method dispose { $!myhtml.dispose; $!tree.dispose }
-  multi method parse($html, :$enc) { $!myhtml.parse: $html, :$enc }
+  multi method parse($html, :$enc) {
+    $!myhtml.parse: $html, :$!tree, :$enc
+  }
   multi method parse($html, :$fragment, :$base, :$ns, :$enc) {
-    $!myhtml.parse: $html, :$!tree :$fragment, :$base, :$ns, :$enc
+    $!myhtml.parse: $html, :$!tree, :$fragment, :$base, :$ns, :$enc
   }
   multi method parse($html, :$single, :$enc) {
-    $!myhtml.parse: $html, :$!tree :$single, :$enc
+    $!myhtml.parse: $html, :$!tree, :$single, :$enc
   }
   multi method parse($html, :$fragment, :$single, :$base, :$ns, :$enc) {
-    $!myhtml.parse: $html, :$!tree :$fragment, :$single, :$base, :$ns, :$enc
+    $!myhtml.parse: $html, :$!tree, :$fragment, :$single, :$base, :$ns, :$enc
   }
-  multi method parse($html, :$chunk) { $!myhtml.parse: $html, :$chunk }
+  multi method parse($html, :$chunk) {
+    $!myhtml.parse: $html, :$!tree, :$chunk
+  }
   multi method parse($html, :$chunk, :$fragment, :$base, :$ns, :$enc) {
     $!myhtml.parse: $html, :$!tree, :$chunk, :$fragment, :$base, :$ns, :$enc
   }
