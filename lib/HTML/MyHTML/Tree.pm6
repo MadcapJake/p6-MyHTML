@@ -1,4 +1,4 @@
-unit class Tree is repr('CPointer');
+unit class Tree is repr('CStruct');
 
 use NativeCall;
 
@@ -10,7 +10,7 @@ use HTML::MyHTML::Tag;
 
 class FILE is repr('CPointer') {}
 class MCharAsync is repr('CPointer') {}
-class MyHTML is repr('CPointer') {}
+class MyHTML is repr('CStruct') {}
 # class MyHTMLTag is repr('CPointer') {}
 class MyHTMLTagIndex is repr('CPointer') {}
 class MyHTMLTreeNode is repr('CPointer') {}
@@ -22,73 +22,72 @@ class TreeDocType is repr('CStruct') {
   has Str  $.attr_system;
 }
 
-class TreeStruct is repr('CStruct') {
-  # ref
-  has Pointer #`{myhtml_t*}                    $.myhtml;
-  has Pointer #`{mchar_async_t*}               $.mchar;
-  has Pointer #`{myhtml_token_t*}              $.token;
-  has Pointer #`{mcobject_async_t*}            $.tree_obj;
-  has Pointer #`{mcsync_t*}                    $.sync;
-  has Pointer #`{mythread_queue_list_entry_t*} $.queue_entry;
-  has Pointer #`{mythread_queue_t*}            $.queue;
-  has Pointer #`{myhtml_tag_t*}                $.tags;
+=head2 Struct fields
+# ref
+has Pointer #`{myhtml_t*}                    $.myhtml;
+has Pointer #`{mchar_async_t*}               $.mchar;
+has Pointer #`{myhtml_token_t*}              $.token;
+has Pointer #`{mcobject_async_t*}            $.tree_obj;
+has Pointer #`{mcsync_t*}                    $.sync;
+has Pointer #`{mythread_queue_list_entry_t*} $.queue_entry;
+has Pointer #`{mythread_queue_t*}            $.queue;
+has Pointer #`{myhtml_tag_t*}                $.tags;
 
-  # init id's
-  has size_t                              $.mcasync_token_id;
-  has size_t                              $.mcasync_attr_id;
-  has size_t                              $.mcasync_tree_id;
-  has size_t                              $.mchar_node_id;
-  has size_t                              $.mcasync_incoming_buf_id;
-  has Pointer #`{myhtml_token_attr_t*}    $.attr_current;
-  has size_t #`{myhtml_tag_id_t}          $.tmp_tag_id;
-  has Pointer #`{mythread_queue_node_t*}  $.current_qnode;
-  has Pointer #`{myhtml_incoming_buf_t*}  $.incoming_buf;
-  has Pointer #`{myhtml_incoming_buf_t*}  $.incoming_buf_first;
+# init id's
+has size_t                              $.mcasync_token_id;
+has size_t                              $.mcasync_attr_id;
+has size_t                              $.mcasync_tree_id;
+has size_t                              $.mchar_node_id;
+has size_t                              $.mcasync_incoming_buf_id;
+has Pointer #`{myhtml_token_attr_t*}    $.attr_current;
+has size_t #`{myhtml_tag_id_t}          $.tmp_tag_id;
+has Pointer #`{mythread_queue_node_t*}  $.current_qnode;
+has Pointer #`{myhtml_incoming_buf_t*}  $.incoming_buf;
+has Pointer #`{myhtml_incoming_buf_t*}  $.incoming_buf_first;
 
-  has Pointer #`{myhtml_tree_indexes_t*}  $.indexes;
+has Pointer #`{myhtml_tree_indexes_t*}  $.indexes;
 
-  # ref for nodes
-  has Pointer #`{myhtml_tree_node_t*}     $.document;
-  has Pointer #`{myhtml_tree_node_t*}     $.fragment;
-  has Pointer #`{myhtml_tree_node_t*}     $.node_head;
-  has Pointer #`{myhtml_tree_node_t*}     $.node_html;
-  has Pointer #`{myhtml_tree_node_t*}     $.node_body;
-  has Pointer #`{myhtml_tree_node_t*}     $.node_form;
-  has TreeDocType                         $.doctype;
+# ref for nodes
+has Pointer #`{myhtml_tree_node_t*}     $.document;
+has Pointer #`{myhtml_tree_node_t*}     $.fragment;
+has Pointer #`{myhtml_tree_node_t*}     $.node_head;
+has Pointer #`{myhtml_tree_node_t*}     $.node_html;
+has Pointer #`{myhtml_tree_node_t*}     $.node_body;
+has Pointer #`{myhtml_tree_node_t*}     $.node_form;
+has TreeDocType                         $.doctype;
 
-  # for build tree
-  has Pointer #`{myhtml_tree_list_t*}           $.active_formatting;
-  has Pointer #`{myhtml_tree_list_t*}           $.open_elements;
-  has Pointer #`{myhtml_tree_list_t*}           $.other_elements;
-  has Pointer #`{myhtml_tree_token_list_t*}     $.token_list;
-  has Pointer #`{myhtml_tree_insertion_list_t*} $.template_insertion;
-  has Pointer #`{myhtml_async_args_t*}          $.async_args;
-  has Pointer #`{myhtml_tree_temp_stream_t*}    $.temp_stream;
-  has Pointer #`{myhtml_token_node_t* volatile} $.token_last_done is rw;
+# for build tree
+has Pointer #`{myhtml_tree_list_t*}           $.active_formatting;
+has Pointer #`{myhtml_tree_list_t*}           $.open_elements;
+has Pointer #`{myhtml_tree_list_t*}           $.other_elements;
+has Pointer #`{myhtml_tree_token_list_t*}     $.token_list;
+has Pointer #`{myhtml_tree_insertion_list_t*} $.template_insertion;
+has Pointer #`{myhtml_async_args_t*}          $.async_args;
+has Pointer #`{myhtml_tree_temp_stream_t*}    $.temp_stream;
+has Pointer #`{myhtml_token_node_t* volatile} $.token_last_done is rw;
 
-  # for detect namespace out of tree builder
-  has Pointer #`{myhtml_token_node_t*}          $.token_namespace;
+# for detect namespace out of tree builder
+has Pointer #`{myhtml_token_node_t*}          $.token_namespace;
 
-  # tree params
-  has int32 #`{enum myhtml_tokenizer_state}     $.state;
-  has int32 #`{enum myhtml_tokenizer_state}     $.state_of_builder;
-  has int32 #`{enum myhtml_insertion_mode}      $.insert_mode;
-  has int32 #`{enum myhtml_insertion_mode}      $.orig_insert_mode;
-  has int32 #`{enum myhtml_tree_compat_mode}    $.compat_mode;
-  has int32 #`{volatile enum myhtml_tree_flags} $.flags is rw;
-  has bool                                      $.foster_parenting;
-  has size_t                                    $.global_offset;
+# tree params
+has int32 #`{enum myhtml_tokenizer_state}     $.state;
+has int32 #`{enum myhtml_tokenizer_state}     $.state_of_builder;
+has int32 #`{enum myhtml_insertion_mode}      $.insert_mode;
+has int32 #`{enum myhtml_insertion_mode}      $.orig_insert_mode;
+has int32 #`{enum myhtml_tree_compat_mode}    $.compat_mode;
+has int32 #`{volatile enum myhtml_tree_flags} $.flags is rw;
+has bool                                      $.foster_parenting;
+has size_t                                    $.global_offset;
 
-  has int32 #`{myhtml_encoding_t}            $.encoding;
-  has int32 #`{myhtml_encoding_t}            $.encoding_usereq;
-  has int32 #`{myhtml_tree_temp_tag_name_t}  $.temp_tag_name;
+has int32 #`{myhtml_encoding_t}            $.encoding;
+has int32 #`{myhtml_encoding_t}            $.encoding_usereq;
+has int32 #`{myhtml_tree_temp_tag_name_t}  $.temp_tag_name;
 
-}
 
 #| Create a MyHTML_TREE structure
 #|
 #| @return myhtml_tree_t* if successful, otherwise an NULL value.
-sub myhtml_tree_create() is native(&lib) returns TreeStruct {*}
+sub myhtml_tree_create() is native(&lib) returns Tree {*}
 
 #| Allocating and Initialization resources for a MyHTML_TREE structure
 #|
@@ -96,7 +95,7 @@ sub myhtml_tree_create() is native(&lib) returns TreeStruct {*}
 #| @param[in] workmyhtml_t*
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_tree_init(TreeStruct, MyHTML) is native(&lib) returns int32 {*}
+sub myhtml_tree_init(Tree, MyHTML) is native(&lib) returns int32 {*}
 
 method new(\myhtml) {
   my \mytree := myhtml_tree_create();

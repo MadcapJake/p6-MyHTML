@@ -65,7 +65,19 @@ class MCharAsync is repr('CPointer') {}
 
 =head2 MyHTML
 
-class MyHTML is repr('CPointer') is export {
+class MyHTML is repr('CStruct') is export {
+
+  has Pointer #`{mythread_t*}       $.thread;
+  has Pointer #`{mcobject_async_t*} $.async_incoming_buf;
+  has MCharAsync                    $.mchar; # for all
+  has Pointer #`{mcobject_async_t*} $.tag_index;
+
+  has Pointer #`{myhtml_tokenizer_state_f*} $.parse_state_func;
+  has Pointer #`{myhtml_insertion_f*}       $.insertion_func;
+
+  has int32 #`{enum myhtml_options}   $.opt;
+  has Pointer #`{myhtml_tree_node_t*} $.marker;
+
 
   #| Create a MyHTML structure
   #|
