@@ -1,10 +1,11 @@
-unit class Tree is repr('CPointer');
+unit class Tree is repr('CStruct');
 
 use NativeCall;
 
 use HTML::MyHTML::Collection;
 use HTML::MyHTML::Encoding;
 use HTML::MyHTML::Lib;
+use HTML::MyHTML::Status;
 use HTML::MyHTML::Tag;
 
 class FILE is repr('CPointer') {}
@@ -27,10 +28,11 @@ sub myhtml_tree_create() is native(&lib) returns Tree {*}
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_tree_init(Tree, MyHTML) is native(&lib) returns int32 {*}
 
-method new($html) {
-  my $p = myhtml_tree_create();
-  myhtml_tree_init($p, $html);
-  return $p;
+method new(\myhtml) {
+  my \mytree := myhtml_tree_create();
+  say 'tree created';
+  say status myhtml_tree_init(mytree, myhtml);
+  return mytree;
 }
 
 #| Clears resources before new parsing
