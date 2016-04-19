@@ -1,6 +1,6 @@
 unit module HTML::MyHTML::Tag;
 
-class MyHTMLTag is repr('CStruct') is export {}
+
 
 enum MyHTMLTagType is export (
     MyHTML_TAG__UNDEF              => 0x000,

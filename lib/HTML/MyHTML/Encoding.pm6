@@ -66,115 +66,33 @@ sub codepoint-to-utf8(size_t, Str)
 
 
 
-#| Convert Unicode Codepoint to UTF-16LE
-#|
-#| I advise not to use UTF-16! Use UTF-8 and be happy!
-#|
-#| @param[in] Codepoint
-#| @param[in] Data to set characters. Data length is 2 or 4 bytes
-#|   data length must be always available 4 bytes
-#|
-#| @return size character set
-sub codepoint-to-utf16(size_t, Str)
-    returns size_t
-    is native(&lib)
-    is symbol<myhtml_encoding_codepoint_to_ascii_utf_16>
-    is export
-    { * }
 
-#| Detect character encoding
-#|
-#| Now available for detect UTF-8, UTF-16LE, UTF-16BE
-#| and Russians: windows-1251,  koi8-r, iso-8859-5, x-mac-cyrillic, ibm866
-#| Other in progress
-#|
-#| @param[in]  text
-#| @param[in]  text length
-#| @param[out] detected encoding
-#|
-#| @return true if encoding found, otherwise false
-sub myhtml_encoding_detect(CArray[uint8], size_t, int32 is rw)
-    returns bool
-    is native(&lib)
-    { * }
 
 sub detect-encoding(Str $text, $enc is rw) is export {
   my CArray[uint8] $chs .= new: $text.encode.list;
   myhtml_encoding_detect: $chs, $chs.elems * 8, $enc;
 }
 
-#| Detect Russian character encoding
-#|
-#| Now available for detect windows-1251,  koi8-r, iso-8859-5, x-mac-cyrillic, ibm866
-#|
-#| @param[in]  text
-#| @param[in]  text length
-#| @param[out] detected encoding
-#|
-#| @return true if encoding found, otherwise false
-sub myhtml_encoding_detect_russian(CArray[uint8], size_t, int32 is rw)
-    returns bool
-    is native(&lib)
-    { * }
-
 sub detect-russian(Str $text, $enc is rw) is export {
   my CArray[uint8] $chs .= new: $text.encode.list;
   myhtml_encoding_detect_russian: $chs, $chs.elems * 8, $enc;
 }
 
-#| Detect Unicode character encoding
-#|
-#| Now available for detect UTF-8, UTF-16LE, UTF-16BE
-#|
-#| @param[in]  text
-#| @param[in]  text length
-#| @param[out] detected encoding
-#|
-#| @return true if encoding found, otherwise false
-sub mythml_encoding_detect_unicode(CArray[uint8], size_t, int32 is rw)
-    returns bool
-    is native(&lib)
-    { * }
+
 
 sub detect-unicode(Str $text, $enc is rw) is export {
   my CArray[uint8] $chs .= new: $text.encode.list;
   myhtml_encoding_detect_unicode: $chs, $chs.elems * 8, $enc;
 }
 
-#| Detect Unicode character encoding by BOM
-#|
-#| Now available for detect UTF-8, UTF-16LE, UTF-16BE
-#|
-#| @param[in]  text
-#| @param[in]  text length
-#| @param[out] detected encoding
-#|
-#| @return true if encoding found, otherwise false
-sub myhtml_encoding_detect_bom(CArray[uint8], size_t, int32 is rw)
-    is native(&lib)
-    returns bool
-    { * }
+
 
 sub detect-bom(Str $text, $enc is rw) is export {
   my CArray[uint8] $chs .= new: $text.encode.list;
   myhtml_encoding_detect_bom: $chs, $chs.elems * 8, $enc;
 }
 
-#| Detect Unicode character encoding by BOM. Cut BOM if will be found
-#|
-#| Now available for detect UTF-8, UTF-16LE, UTF-16BE
-#|
-#| @param[in]  text
-#| @param[in]  text length
-#| @param[out] detected encoding
-#| @param[out] new text position
-#| @param[out] new size position
-#|
-#| @return true if encoding found, otherwise false
-sub myhtml_encoding_detect_and_cut_bom(CArray[uint8], size_t, int32 is rw, CArray[uint8] is rw, size_t is rw)
-    returns bool
-    is native(&lib)
-    { * }
+
 
 sub detect-and-cut-bom(
   Str:D  $text,  #= Text to be detected and cut

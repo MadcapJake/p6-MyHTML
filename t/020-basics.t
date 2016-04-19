@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-use HTML::MyHTML;
+use HTML::MyHTML::NativeCall;
 
 my str $html = "<div><span>HTML</span></div>";
 
