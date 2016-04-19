@@ -34,7 +34,12 @@ class MyHTML is repr<CStruct> {
 
 }
 
-class FILE is repr<CPointer> {}
+class FILE is repr<CPointer> is export {
+    sub fdopen(int64, Str) returns FILE is native { * }
+    method new(int64(Int) $fd) {
+        fdopen($fd, "w");
+    }
+}
 
 class Attribute is repr<CPointer> {}
 
@@ -52,7 +57,21 @@ class String is repr<CStruct> {
   has size_t $.node-idx;
 }
 
-class TreeNode is repr<CPointer> {}
+class TreeNode is repr<CStruct> {
+  has int32 $.flags;
+
+  has int32 $.tag-idx;
+  has int32 $.my-namespace;
+
+  has TreeNode $.prev;
+  has TreeNode $.next;
+  has TreeNode $.child;
+  has TreeNode $.parent;
+
+  has TreeNode $.last-child;
+
+  has Pointer $.token;
+}
 class Tag is repr<CStruct> {}
 class TagIndex is repr<CPointer> {}
 class TagIndexEntry is repr<CStruct> {}
@@ -407,7 +426,11 @@ sub myhtml_tree_get_mchar(Tree) returns MCharAsync is native(&lib) is export { *
 #| @param[in] myhtml_tree_t*
 #|
 #| @return size_t, node id
-sub myhtml_tree_get_mchar_node_id(Tree) returns size_t is native(&lib) is export { * }
+sub myhtml_tree_get_mchar_node_id(Tree)
+    returns size_t
+    is native(&lib)
+    is export
+    { * }
 
 #| Print tree of a node. Print including current node
 #|
@@ -415,7 +438,10 @@ sub myhtml_tree_get_mchar_node_id(Tree) returns size_t is native(&lib) is export
 #| @param[in] myhtml_tree_node_t*
 #| @param[in] file handle, for example use stdout
 #| @param[in] tab (\t) increment for pretty print, set 0
-sub myhtml_tree_print_by_node(Tree, TreeNode, FILE, size_t) is native(&lib) is export { * }
+sub myhtml_tree_print_by_node(Tree, TreeNode, FILE, size_t)
+    is native(&lib)
+    is export
+    { * }
 
 #| Print tree of a node. Print excluding current node
 #|
@@ -425,21 +451,29 @@ sub myhtml_tree_print_by_node(Tree, TreeNode, FILE, size_t) is native(&lib) is e
 #| @param[in] tab (\t) increment for pretty print, set 0
 sub myhtml_tree_print_node_childs(Tree, TreeNode, Pointer, size_t)
     is native(&lib)
-    is export { * }
+    is export
+    { * }
 
 #| Print a node
 #|
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_node_t*
 #| @param[in] file handle, for example use stdout
-sub myhtml_tree_print_node(Tree, TreeNode, FILE) is native(&lib) is export { * }
+sub myhtml_tree_print_node(Tree, TreeNode, FILE)
+    is native(&lib)
+    is export
+    { * }
 
 #| Get first (begin) node of tree
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return myhtml_tree_node_t* if successful, otherwise a NULL value
-sub myhtml_node_first(Tree) returns TreeNode is native(&lib) is export { * }
+sub myhtml_node_first(Tree)
+    returns TreeNode
+    is native(&lib)
+    is export
+    { * }
 
 #| Get nodes by tag id
 #|
