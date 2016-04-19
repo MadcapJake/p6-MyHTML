@@ -27,7 +27,7 @@ my $node = myhtml_tag_index_tree_node($idx-node);
 
 # print original tree
 say "Original tree:";
-myhtml_tree_print_node_childs($tree, myhtml_tree_get_document($tree), $*OUT, 0);
+myhtml_tree_print_node_childs($tree, myhtml_tree_get_document($tree), FILE.new($*OUT.native-descriptor), 0);
 
 say "For a test; Create and delete 100_000 attrs...";
 for ^100_000 {
@@ -39,7 +39,7 @@ for ^100_000 {
 myhtml_attribute_add($tree, $node, "key", 3, "value", 5, 0x00);
 
 say "Modified tree:";
-myhtml_tree_print_node_childs($tree, myhtml_tree_get_document($tree), $*OUT, 0);
+myhtml_tree_print_node_childs($tree, myhtml_tree_get_document($tree), FILE.new($*OUT.native-descriptor), 0);
 
 # get attr by key name
 my $gets-attr = myhtml_attribute_by_key($node, "key", 3);
