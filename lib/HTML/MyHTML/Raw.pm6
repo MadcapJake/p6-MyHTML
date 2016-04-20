@@ -41,7 +41,7 @@ class FILE is repr<CPointer> is export {
   method path(Str $path) { fopen($path, "w+") }
 }
 
-class Attribute is repr<CPointer> {}
+class MyAttribute is repr<CPointer> {}
 
 class Collection is repr<CStruct> {
   has CArray[Pointer] $.list;
@@ -187,7 +187,7 @@ sub myhtml_clean(MyHTML) is native(&lib) is export { * }
 #|
 #| @param[in] myhtml_t*
 #| @return NULL if successful, otherwise an MyHTML structure.
-sub myhtml_destroy(MyHTML) is native(&lib) is export { * }
+sub myhtml_destroy(Pointer) is native(&lib) is export { * }
 
 #| Parsing HTML
 #|
@@ -774,7 +774,7 @@ sub myhtml_node_is_close_self(TreeNode)
 #|
 #| @return myhtml_tree_attr_t* if exists, otherwise an NULL value
 sub myhtml_node_attribute_first(TreeNode)
-    returns Attribute
+    returns MyAttribute
     is native(&lib)
     is export
     { * }
@@ -785,7 +785,7 @@ sub myhtml_node_attribute_first(TreeNode)
 #|
 #| @return myhtml_tree_attr_t* if exists, otherwise an NULL value
 sub myhtml_node_attribute_last(TreeNode)
-    returns Attribute
+    returns MyAttribute
     is native(&lib)
     is export
     { * }
@@ -813,15 +813,15 @@ sub myhtml_node_string(TreeNode)
     is export
     { * }
 
-=head3 Attribute
+=head3 MyAttribute
 
 #| Get next sibling attribute of one node
 #|
 #| @param[in] myhtml_tree_attr_t*
 #|
 #| @return myhtml_tree_attr_t* if exists, otherwise an NULL value
-sub myhtml_attribute_next(Attribute)
-    returns Attribute
+sub myhtml_attribute_next(MyAttribute)
+    returns MyAttribute
     is native(&lib)
     is export
     { * }
@@ -831,8 +831,8 @@ sub myhtml_attribute_next(Attribute)
 #| @param[in] myhtml_tree_attr_t*
 #|
 #| @return myhtml_tree_attr_t* if exists, otherwise an NULL value
-sub myhtml_attribute_prev(Attribute)
-    returns Attribute
+sub myhtml_attribute_prev(MyAttribute)
+    returns MyAttribute
     is native(&lib)
     is export
     { * }
@@ -842,7 +842,7 @@ sub myhtml_attribute_prev(Attribute)
 #| @param[in] myhtml_tree_attr_t*
 #|
 #| @return enum myhtml_namespace
-sub myhtml_attribute_namespace(Attribute)
+sub myhtml_attribute_namespace(MyAttribute)
     returns int32
     is native(&lib)
     is export
@@ -854,7 +854,7 @@ sub myhtml_attribute_namespace(Attribute)
 #| @param[out] optional, name length
 #|
 #| @return const char* if exists, otherwise an NULL value
-sub myhtml_attribute_name(Attribute)
+sub myhtml_attribute_name(MyAttribute)
     returns Str
     is native(&lib)
     is export
@@ -866,7 +866,7 @@ sub myhtml_attribute_name(Attribute)
 #| @param[out] optional, value length
 #|
 #| @return const char* if exists, otherwise an NULL value
-sub myhtml_attribute_value(Attribute)
+sub myhtml_attribute_value(MyAttribute)
     returns Str
     is native(&lib)
     is export
@@ -897,7 +897,7 @@ sub myhtml_attribute_by_key(TreeNode, CArray[uint8], size_t)
 #|
 #| @return created myhtml_tree_attr_t* if successful, otherwise a NULL value
 sub myhtml_attribute_add(Tree, TreeNode, CArray[uint8], size_t, CArray[uint8], size_t, int32)
-    returns Attribute
+    returns MyAttribute
     is native(&lib)
     is export
     { * }
@@ -908,8 +908,8 @@ sub myhtml_attribute_add(Tree, TreeNode, CArray[uint8], size_t, CArray[uint8], s
 #| @param[in] myhtml_tree_attr_t*
 #|
 #| @return myhtml_tree_attr_t* if successful, otherwise a NULL value
-sub myhtml_attribute_remove(TreeNode, Attribute)
-    returns Attribute
+sub myhtml_attribute_remove(TreeNode, MyAttribute)
+    returns MyAttribute
     is native(&lib)
     is export
     { * }
@@ -922,7 +922,7 @@ sub myhtml_attribute_remove(TreeNode, Attribute)
 #|
 #| @return myhtml_tree_attr_t* if successful, otherwise a NULL value
 sub myhtml_attribute_remove_by_key(TreeNode, Str, size_t)
-    returns Attribute
+    returns MyAttribute
     is native(&lib)
     is export
     { * }
@@ -932,7 +932,7 @@ sub myhtml_attribute_remove_by_key(TreeNode, Str, size_t)
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_node_t*
 #| @param[in] myhtml_tree_attr_t*
-sub myhtml_attribute_delete(Tree, TreeNode, Attribute)
+sub myhtml_attribute_delete(Tree, TreeNode, MyAttribute)
     is native(&lib)
     is export
     { * }
@@ -941,7 +941,7 @@ sub myhtml_attribute_delete(Tree, TreeNode, Attribute)
 #|
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_attr_t*
-sub myhtml_attribute_free(Tree, Attribute)
+sub myhtml_attribute_free(Tree, MyAttribute)
     is native(&lib)
     is export
     { * }
