@@ -48,7 +48,7 @@ class FILE is repr<CPointer> is export {
 
 class MyAttribute is repr<CPointer> {}
 
-class Collection is repr<CStruct> {
+class Collection is repr<CStruct> is export {
   has CArray[Pointer] $.list;
   has size_t $.size;
   has size_t $.length;
@@ -586,7 +586,7 @@ sub myhtml_node_parent(TreeNode)
 #| @param[in] myhtml_tree_node_t*
 #|
 #| @return myhtml_tree_node_t* if exists, otherwise an NULL value
-sub myhtml_node_child(TreeNode)
+sub myhtml_node_child(Pointer)
     returns TreeNode
     is native('myhtml')
     is export
@@ -1125,14 +1125,20 @@ sub myhtml_collection_create(size_t, int32 is rw)
 #| Clears collection
 #|
 #| @param[in] myhtml_collection_t*
-sub myhtml_collection_clean(Collection) is native('myhtml') { * }
+sub myhtml_collection_clean(Collection)
+    is native('myhtml')
+    is export
+    { * }
 
 #| Destroy allocated resources
 #|
 #| @param[in] myhtml_collection_t*
 #|
 #| @return NULL if successful, otherwise an myhtml_collection_t* structure
-sub myhtml_collection_destroy(Collection) is native('myhtml') { * }
+sub myhtml_collection_destroy(Collection)
+    is native('myhtml')
+    is export
+    { * }
 
 #| Check size by length and increase if necessary
 #|
