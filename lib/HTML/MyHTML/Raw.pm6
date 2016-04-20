@@ -83,9 +83,21 @@ class TreeNode is repr<CStruct> {
 }
 
 class Tag is repr<CStruct> {}
-class TagIndex is repr<CPointer> {}
-class TagIndexEntry is repr<CStruct> {}
-class TagIndexNode is repr<CStruct> {}
+class TagIndexNode is repr<CStruct> {
+  has TagIndexNode $.next;
+  has TagIndexNode $.prev;
+  has TreeNode     $.node;
+}
+class TagIndexEntry is repr<CStruct> {
+  has TagIndexNode $.first;
+  has TagIndexNode $.last;
+  has size_t       $.count;
+}
+class TagIndex is repr<CStruct> {
+  has TagIndexEntry $.tags;
+  has size_t        $.tags-length;
+  has size_t        $.tags-size;
+}
 
 class TreeDocType is repr<CStruct> {
   has bool $.is_html;
@@ -227,7 +239,7 @@ sub myhtml_parse(Tree, int32, CArray[uint8], size_t)
 #| All input character encoding decode to utf-8
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse_fragment(Tree, int32, CArray[uint8], size_t, int32, int32)
+sub myhtml_parse_fragment(Tree, int32, Blob, size_t, int32, int32)
     returns int32
     is native(&lib)
     is export
@@ -906,7 +918,7 @@ sub myhtml_attribute_by_key(TreeNode, CArray[uint8], size_t)
 #| @param[in] character encoding; Default: MyHTML_ENCODING_UTF_8 or MyHTML_ENCODING_DEFAULT or 0
 #|
 #| @return created myhtml_tree_attr_t* if successful, otherwise a NULL value
-sub myhtml_attribute_add(Tree, TreeNode, CArray[uint8], size_t, CArray[uint8], size_t, int32)
+sub myhtml_attribute_add(Tree, TreeNode, Blob, size_t, Blob, size_t, int32)
     returns MyAttribute
     is native(&lib)
     is export

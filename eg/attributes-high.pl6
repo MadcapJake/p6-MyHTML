@@ -5,8 +5,8 @@ use NativeCall;
 
 use HTML::MyHTML::Raw;
 
-my $html = "<div></div>";
-my CArray[uint] $chs .= new: $html.encode('UTF-8').list;
+my $html = "<div><p>hello</p></div>";
+# my CArray[uint] $chs .= new: $html.encode('UTF-8').list;
 
 # basic init
 my $myhtml = myhtml_create();
@@ -17,14 +17,14 @@ my $tree = myhtml_tree_create();
 myhtml_tree_init($tree, $myhtml);
 
 # parse html
-myhtml_parse_fragment($tree, 0, $chs, $chs.elems * 8, 0x02a, 0x01);
+myhtml_parse_fragment($tree, 0, $html.encode, $html.encode.bytes, 0x02a, 0x01);
 
 # get first DIV from index
 my $tag-idx = myhtml_tree_get_tag_index($tree);
 my $idx-node = myhtml_tag_index_first($tag-idx, 0x02a);
 my $node = myhtml_tag_index_tree_node($idx-node);
 
-# debugging
+=for debugging
 say myhtml_node_tag_id($node); #= segfaults
 say myhtml_tag_index_entry_count($tag-idx, 0x02a);
 
@@ -46,11 +46,11 @@ for ^100_000 {
   myhtml_attribute_delete($tree, $node, $attr);
 }
 
-=begin NotUsing
+# =begin NotUsing
 # add first attr in first div in tree
-my CArray[uint] $key   .= new("key".encode.list);
-my CArray[uint] $value .= new("value".encode.list);
-my $add-status = myhtml_attribute_add($tree, $node, $key, $key.elems * 8, $value, $value.elems * 8, 0x00);
+my $key   = "key".encode;
+my $value = "value".encode;
+myhtml_attribute_add($tree, $node, $key, $key.bytes, $value, $value.bytes, 0x00);
 
 say "Modified tree:";
 myhtml_tree_print_node_childs(
@@ -59,7 +59,7 @@ myhtml_tree_print_node_childs(
   FILE.fd(1),
   0
 );
-=end NotUsing
+# =end NotUsing
 
 =for other
 # get attr by key name
