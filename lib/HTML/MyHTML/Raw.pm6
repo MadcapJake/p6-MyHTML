@@ -183,7 +183,7 @@ class Tree is repr<CStruct> {
 #| @return myhtml_t* if successful, otherwise an NULL value.
 sub myhtml_create()
     returns Pointer
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -202,20 +202,20 @@ sub myhtml_create()
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status value.
 sub myhtml_init(Pointer, int32, size_t, size_t)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
 #| Clears queue and threads resources
 #|
 #| @param[in] myhtml_t*
-sub myhtml_clean(MyHTML) is native(&lib) is export { * }
+sub myhtml_clean(MyHTML) is native('myhtml') is export { * }
 
 #| Destroy of a MyHTML structure
 #|
 #| @param[in] myhtml_t*
 #| @return NULL if successful, otherwise an MyHTML structure.
-sub myhtml_destroy(Pointer) is native(&lib) is export { * }
+sub myhtml_destroy(Pointer) is native('myhtml') is export { * }
 
 #| Parsing HTML
 #|
@@ -229,7 +229,7 @@ sub myhtml_destroy(Pointer) is native(&lib) is export { * }
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_parse(Tree, int32, CArray[uint8], size_t)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -247,7 +247,7 @@ sub myhtml_parse(Tree, int32, CArray[uint8], size_t)
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_parse_fragment(Tree, int32, Blob, size_t, int32, int32)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -264,7 +264,7 @@ sub myhtml_parse_fragment(Tree, int32, Blob, size_t, int32, int32)
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_parse_single(Tree, int32, CArray[uint8], size_t)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -283,7 +283,7 @@ sub myhtml_parse_single(Tree, int32, CArray[uint8], size_t)
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_parse_fragment_single(Tree, int32, CArray[uint8], size_t, int32, int32)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -296,7 +296,7 @@ sub myhtml_parse_fragment_single(Tree, int32, CArray[uint8], size_t, int32, int3
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_parse_chunk(Tree, CArray[uint8], size_t)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -311,7 +311,7 @@ sub myhtml_parse_chunk(Tree, CArray[uint8], size_t)
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_parse_chunk_fragment(Tree, CArray[uint8], size_t, int32, int32)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -325,7 +325,7 @@ sub myhtml_parse_chunk_fragment(Tree, CArray[uint8], size_t, int32, int32)
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_parse_chunk_single(Tree, CArray[uint8], size_t)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -341,7 +341,7 @@ sub myhtml_parse_chunk_single(Tree, CArray[uint8], size_t)
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
 sub myhtml_parse_chunk_fragment_single(Tree, CArray[uint8], size_t, int32, int32)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -350,14 +350,14 @@ sub myhtml_parse_chunk_fragment_single(Tree, CArray[uint8], size_t, int32, int32
 #| @param[in] myhtml_tree_t*
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse_chunk_end(Tree) returns int32 is native(&lib) is export { * }
+sub myhtml_parse_chunk_end(Tree) returns int32 is native('myhtml') is export { * }
 
 =head3 Tree
 
 #| Create a MyHTML_TREE structure
 #|
 #| @return myhtml_tree_t* if successful, otherwise an NULL value.
-sub myhtml_tree_create() returns Tree is native(&lib) is export { * }
+sub myhtml_tree_create() returns Tree is native('myhtml') is export { * }
 
 #| Allocating and Initialization resources for a MyHTML_TREE structure
 #|
@@ -365,89 +365,89 @@ sub myhtml_tree_create() returns Tree is native(&lib) is export { * }
 #| @param[in] workmyhtml_t*
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_tree_init(Tree, Pointer[MyHTML]) returns int32 is native(&lib) is export { * }
+sub myhtml_tree_init(Tree, Pointer[MyHTML]) returns int32 is native('myhtml') is export { * }
 
 #| Clears resources before new parsing
 #|
 #| @param[in] myhtml_tree_t*
-sub myhtml_tree_clean(Tree) is native(&lib) is export { * }
+sub myhtml_tree_clean(Tree) is native('myhtml') is export { * }
 
 #| Add child node to node. If children already exists it will be added to the last
 #|
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_node_t* The node to which we add child node
 #| @param[in] myhtml_tree_node_t* The node which adds
-sub myhtml_tree_node_add_child(Tree, TreeNode, TreeNode) is native(&lib) is export { * }
+sub myhtml_tree_node_add_child(Tree, TreeNode, TreeNode) is native('myhtml') is export { * }
 
 #| Add a node immediately before the existing node
 #|
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_node_t* add for this node
 #| @param[in] myhtml_tree_node_t* add this node
-sub myhtml_tree_node_insert_before(Tree, TreeNode, TreeNode) is native(&lib) is export { * }
+sub myhtml_tree_node_insert_before(Tree, TreeNode, TreeNode) is native('myhtml') is export { * }
 
 #| Add a node immediately after the existing node
 #|
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_node_t* add for this node
 #| @param[in] myhtml_tree_node_t* add this node
-sub myhtml_tree_node_insert_after(Tree, TreeNode, TreeNode) is native(&lib) is export { * }
+sub myhtml_tree_node_insert_after(Tree, TreeNode, TreeNode) is native('myhtml') is export { * }
 
 #| Destroy of a MyHTML_TREE structure
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return NULL if successful, otherwise an MyHTML_TREE structure
-sub myhtml_tree_destroy(Tree) returns Tree is native(&lib) is export { * }
+sub myhtml_tree_destroy(Tree) returns Tree is native('myhtml') is export { * }
 
 #| Get myhtml_t* from a myhtml_tree_t*
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return myhtml_t* if exists, otherwise a NULL value
-sub myhtml_tree_get_myhtml(Tree) returns MyHTML is native(&lib) is export { * }
+sub myhtml_tree_get_myhtml(Tree) returns MyHTML is native('myhtml') is export { * }
 
 #| Get myhtml_tag_t* from a myhtml_tree_t*
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return myhtml_tag_t* if exists, otherwise a NULL value
-sub myhtml_tree_get_tag(Tree) returns Tag is native(&lib) is export { * }
+sub myhtml_tree_get_tag(Tree) returns Tag is native('myhtml') is export { * }
 
 #| Get myhtml_tag_index_t* from a myhtml_tree_t*
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return myhtml_tag_index_t* if exists, otherwise a NULL value
-sub myhtml_tree_get_tag_index(Tree) returns TagIndex is native(&lib) is export { * }
+sub myhtml_tree_get_tag_index(Tree) returns TagIndex is native('myhtml') is export { * }
 
 #| Get Tree Document (Root of Tree)
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return myhtml_tree_node_t* if successful, otherwise a NULL value
-sub myhtml_tree_get_document(Tree) returns TreeNode is native(&lib) is export { * }
+sub myhtml_tree_get_document(Tree) returns TreeNode is native('myhtml') is export { * }
 
 #| Get node HTML (Document -> HTML, Root of HTML Document)
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return myhtml_tree_node_t* if successful, otherwise a NULL value
-sub myhtml_tree_get_node_html(Tree) returns TreeNode is native(&lib) is export { * }
+sub myhtml_tree_get_node_html(Tree) returns TreeNode is native('myhtml') is export { * }
 
 #| Get node BODY (Document -> HTML -> BODY)
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return myhtml_tree_node_t* if successful, otherwise a NULL value
-sub myhtml_tree_get_node_body(Tree) returns TreeNode is native(&lib) is export { * }
+sub myhtml_tree_get_node_body(Tree) returns TreeNode is native('myhtml') is export { * }
 
 #| Get mchar_async_t object
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return mchar_async_t* if exists, otherwise a NULL value
-sub myhtml_tree_get_mchar(Tree) returns MCharAsync is native(&lib) is export { * }
+sub myhtml_tree_get_mchar(Tree) returns MCharAsync is native('myhtml') is export { * }
 
 #| Get node_id from main thread for mchar_async_t object
 #|
@@ -456,7 +456,7 @@ sub myhtml_tree_get_mchar(Tree) returns MCharAsync is native(&lib) is export { *
 #| @return size_t, node id
 sub myhtml_tree_get_mchar_node_id(Tree)
     returns size_t
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -467,7 +467,7 @@ sub myhtml_tree_get_mchar_node_id(Tree)
 #| @param[in] file handle, for example use stdout
 #| @param[in] tab (\t) increment for pretty print, set 0
 sub myhtml_tree_print_by_node(Tree, TreeNode, FILE, size_t)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -478,7 +478,7 @@ sub myhtml_tree_print_by_node(Tree, TreeNode, FILE, size_t)
 #| @param[in] file handle, for example use stdout
 #| @param[in] tab (\t) increment for pretty print, set 0
 sub myhtml_tree_print_node_childs(Tree, TreeNode, FILE, size_t)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -488,7 +488,7 @@ sub myhtml_tree_print_node_childs(Tree, TreeNode, FILE, size_t)
 #| @param[in] myhtml_tree_node_t*
 #| @param[in] file handle, for example use stdout
 sub myhtml_tree_print_node(Tree, TreeNode, FILE)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -499,7 +499,7 @@ sub myhtml_tree_print_node(Tree, TreeNode, FILE)
 #| @return myhtml_tree_node_t* if successful, otherwise a NULL value
 sub myhtml_node_first(Tree)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -513,7 +513,7 @@ sub myhtml_node_first(Tree)
 #| @return myhtml_collection_t* if successful, otherwise an NULL value
 sub myhtml_get_nodes_by_tag_id(Tree, Collection, int32, int32)
     returns Collection
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -528,7 +528,7 @@ sub myhtml_get_nodes_by_tag_id(Tree, Collection, int32, int32)
 #| @return myhtml_collection_t* if successful, otherwise an NULL value
 sub myhtml_get_nodes_by_name(Tree, Collection, CArray[uint8], size_t, int32)
     returns Collection
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -538,14 +538,14 @@ sub myhtml_get_nodes_by_name(Tree, Collection, CArray[uint8], size_t, int32)
 #| @param[in] Input character encoding
 #|
 #| @return NULL if successful, otherwise an myhtml_collection_t* structure
-sub myhtml_encoding_set(Tree, int32) is native(&lib) is export { * }
+sub myhtml_encoding_set(Tree, int32) is native('myhtml') is export { * }
 
 #| Get character encoding for current stream
 #|
 #| @param[in] myhtml_tree_t*
 #|
 #| @return myhtml_encoding_t
-sub myhtml_encoding_get(Tree) is native(&lib) is export { * }
+sub myhtml_encoding_get(Tree) is native('myhtml') is export { * }
 
 =head3 Node
 
@@ -556,7 +556,7 @@ sub myhtml_encoding_get(Tree) is native(&lib) is export { * }
 #| @return myhtml_tree_node_t* if exists, otherwise an NULL value
 sub myhtml_node_next(TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -567,7 +567,7 @@ sub myhtml_node_next(TreeNode)
 #| @return myhtml_tree_node_t* if exists, otherwise an NULL value
 sub myhtml_node_prev(TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -578,7 +578,7 @@ sub myhtml_node_prev(TreeNode)
 #| @return myhtml_tree_node_t* if exists, otherwise an NULL value
 sub myhtml_node_parent(TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -589,7 +589,7 @@ sub myhtml_node_parent(TreeNode)
 #| @return myhtml_tree_node_t* if exists, otherwise an NULL value
 sub myhtml_node_child(TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -600,7 +600,7 @@ sub myhtml_node_child(TreeNode)
 #| @return myhtml_tree_node_t* if exists, otherwise an NULL value
 sub myhtml_node_last_child(TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -613,7 +613,7 @@ sub myhtml_node_last_child(TreeNode)
 #| @return myhtml_tree_node_t* if successful, otherwise a NULL value
 sub myhtml_node_create(Tree, int32, int32)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -622,7 +622,7 @@ sub myhtml_node_create(Tree, int32, int32)
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_node_t*
 sub myhtml_node_free(Tree, TreeNode)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -634,7 +634,7 @@ sub myhtml_node_free(Tree, TreeNode)
 #| @return myhtml_tree_node_t* if successful, otherwise a NULL value
 sub myhtml_node_remove(Tree, TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -642,14 +642,14 @@ sub myhtml_node_remove(Tree, TreeNode)
 #|
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_node_t*
-sub myhtml_node_delete(Tree, TreeNode) is native(&lib) is export { * }
+sub myhtml_node_delete(Tree, TreeNode) is native('myhtml') is export { * }
 
 #| Remove nodes of tree recursively and release allocated resources
 #|
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_node_t*
 sub myhtml_node_delete_recursive(Tree, TreeNode)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -663,7 +663,7 @@ sub myhtml_node_delete_recursive(Tree, TreeNode)
 #| @return insertion node if successful, otherwise a NULL value
 sub myhtml_node_insert_to_appropriate_place(Tree, TreeNode, TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -676,7 +676,7 @@ sub myhtml_node_insert_to_appropriate_place(Tree, TreeNode, TreeNode)
 #| @return insertion node if successful, otherwise a NULL value
 sub myhtml_node_insert_append_child(Tree, TreeNode, TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -689,7 +689,7 @@ sub myhtml_node_insert_append_child(Tree, TreeNode, TreeNode)
 #| @return insertion node if successful, otherwise a NULL value
 sub myhtml_node_insert_after(Tree, TreeNode, TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -702,7 +702,7 @@ sub myhtml_node_insert_after(Tree, TreeNode, TreeNode)
 #| @return insertion node if successful, otherwise a NULL value
 sub myhtml_node_insert_before(Tree, TreeNode, TreeNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -717,7 +717,7 @@ sub myhtml_node_insert_before(Tree, TreeNode, TreeNode)
 #| @return myhtml_string_t* if successful, otherwise a NULL value
 sub myhtml_node_text_set(Tree, TreeNode, CArray[uint8], size_t, int32)
     returns String
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -733,7 +733,7 @@ sub myhtml_node_text_set(Tree, TreeNode, CArray[uint8], size_t, int32)
 #| @return myhtml_string_t* if successful, otherwise a NULL value
 sub myhtml_node_text_set_with_charef(Tree, TreeNode, CArray[uint8], size_t, int32)
     returns String
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -744,7 +744,7 @@ sub myhtml_node_text_set_with_charef(Tree, TreeNode, CArray[uint8], size_t, int3
 #| @return enum myhtml_namespace
 sub myhtml_node_namespace(TreeNode)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -755,7 +755,7 @@ sub myhtml_node_namespace(TreeNode)
 #| @return myhtml_tag_id_t
 sub myhtml_node_tag_id(TreeNode)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -768,7 +768,7 @@ sub myhtml_node_tag_id(TreeNode)
 #| @return const char* if exists, otherwise a NULL value
 sub myhtml_tag_name_by_id(Tree, int32)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -781,7 +781,7 @@ sub myhtml_tag_name_by_id(Tree, int32)
 #| @return tag id
 sub myhtml_tag_id_by_name(Tree, CArray[uint8], size_t)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -792,7 +792,7 @@ sub myhtml_tag_id_by_name(Tree, CArray[uint8], size_t)
 #| @return true or false (1 or 0)
 sub myhtml_node_is_close_self(TreeNode)
     returns bool
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -803,7 +803,7 @@ sub myhtml_node_is_close_self(TreeNode)
 #| @return myhtml_tree_attr_t* if exists, otherwise an NULL value
 sub myhtml_node_attribute_first(TreeNode)
     returns MyAttribute
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -814,7 +814,7 @@ sub myhtml_node_attribute_first(TreeNode)
 #| @return myhtml_tree_attr_t* if exists, otherwise an NULL value
 sub myhtml_node_attribute_last(TreeNode)
     returns MyAttribute
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -826,7 +826,7 @@ sub myhtml_node_attribute_last(TreeNode)
 #| @return const char* if exists, otherwise an NULL value
 sub myhtml_node_text(TreeNode)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -837,7 +837,7 @@ sub myhtml_node_text(TreeNode)
 #| @return myhtml_string_t* if exists, otherwise an NULL value
 sub myhtml_node_string(TreeNode)
     returns String
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -850,7 +850,7 @@ sub myhtml_node_string(TreeNode)
 #| @return myhtml_tree_attr_t* if exists, otherwise an NULL value
 sub myhtml_attribute_next(MyAttribute)
     returns MyAttribute
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -861,7 +861,7 @@ sub myhtml_attribute_next(MyAttribute)
 #| @return myhtml_tree_attr_t* if exists, otherwise an NULL value
 sub myhtml_attribute_prev(MyAttribute)
     returns MyAttribute
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -872,7 +872,7 @@ sub myhtml_attribute_prev(MyAttribute)
 #| @return enum myhtml_namespace
 sub myhtml_attribute_namespace(MyAttribute)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -884,7 +884,7 @@ sub myhtml_attribute_namespace(MyAttribute)
 #| @return const char* if exists, otherwise an NULL value
 sub myhtml_attribute_name(MyAttribute)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -896,7 +896,7 @@ sub myhtml_attribute_name(MyAttribute)
 #| @return const char* if exists, otherwise an NULL value
 sub myhtml_attribute_value(MyAttribute)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -909,7 +909,7 @@ sub myhtml_attribute_value(MyAttribute)
 #| @return myhtml_tree_attr_t* if exists, otherwise a NULL value
 sub myhtml_attribute_by_key(TreeNode, Blob, size_t)
     returns MyAttribute
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -926,7 +926,7 @@ sub myhtml_attribute_by_key(TreeNode, Blob, size_t)
 #| @return created myhtml_tree_attr_t* if successful, otherwise a NULL value
 sub myhtml_attribute_add(Tree, TreeNode, Blob, size_t, Blob, size_t, int32)
     returns MyAttribute
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -938,7 +938,7 @@ sub myhtml_attribute_add(Tree, TreeNode, Blob, size_t, Blob, size_t, int32)
 #| @return myhtml_tree_attr_t* if successful, otherwise a NULL value
 sub myhtml_attribute_remove(TreeNode, MyAttribute)
     returns MyAttribute
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -951,7 +951,7 @@ sub myhtml_attribute_remove(TreeNode, MyAttribute)
 #| @return myhtml_tree_attr_t* if successful, otherwise a NULL value
 sub myhtml_attribute_remove_by_key(TreeNode, Str, size_t)
     returns MyAttribute
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -961,7 +961,7 @@ sub myhtml_attribute_remove_by_key(TreeNode, Str, size_t)
 #| @param[in] myhtml_tree_node_t*
 #| @param[in] myhtml_tree_attr_t*
 sub myhtml_attribute_delete(Tree, TreeNode, MyAttribute)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -970,7 +970,7 @@ sub myhtml_attribute_delete(Tree, TreeNode, MyAttribute)
 #| @param[in] myhtml_tree_t*
 #| @param[in] myhtml_tree_attr_t*
 sub myhtml_attribute_free(Tree, MyAttribute)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -983,7 +983,7 @@ sub myhtml_attribute_free(Tree, MyAttribute)
 #| @return myhtml_tag_index_t* if successful, otherwise a NULL value
 sub myhtml_tag_index_create(Tag)
     returns TagIndex
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -995,7 +995,7 @@ sub myhtml_tag_index_create(Tag)
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status.
 sub myhtml_tag_index_init(Tag, TagIndex)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1003,7 +1003,7 @@ sub myhtml_tag_index_init(Tag, TagIndex)
 #|
 #| @param[in] myhtml_tag_t*
 #| @param[in] myhtml_tag_index_t*
-sub myhtml_tag_index_clean(Tag, TagIndex) is native(&lib) { * }
+sub myhtml_tag_index_clean(Tag, TagIndex) is native('myhtml') { * }
 
 #| Free allocated resources
 #|
@@ -1013,7 +1013,7 @@ sub myhtml_tag_index_clean(Tag, TagIndex) is native(&lib) { * }
 #| @return NULL if successful, otherwise an myhtml_tag_index_t* structure
 sub myhtml_tag_index_destroy(Tag, TagIndex)
     returns TagIndex
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1026,7 +1026,7 @@ sub myhtml_tag_index_destroy(Tag, TagIndex)
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status.
 sub myhtml_tag_index_add(Tag, TagIndex, TreeNode)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1038,7 +1038,7 @@ sub myhtml_tag_index_add(Tag, TagIndex, TreeNode)
 #| @return myhtml_tag_index_entry_t* if successful, otherwise a NULL value.
 sub myhtml_tag_index_entry(TagIndex, int32)
     returns TagIndexEntry
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1050,7 +1050,7 @@ sub myhtml_tag_index_entry(TagIndex, int32)
 #| @return myhtml_tag_index_node_t* if exists, otherwise a NULL value.
 sub myhtml_tag_index_first(TagIndex, int32)
     returns TagIndexNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1062,7 +1062,7 @@ sub myhtml_tag_index_first(TagIndex, int32)
 #| @return myhtml_tag_index_node_t* if exists, otherwise a NULL value.
 sub myhtml_tag_index_last(TagIndex, int32)
     returns TagIndexNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1073,7 +1073,7 @@ sub myhtml_tag_index_last(TagIndex, int32)
 #| @return myhtml_tag_index_node_t* if exists, otherwise a NULL value.
 sub myhtml_tag_index_next(TagIndexNode)
     returns TagIndexNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1084,7 +1084,7 @@ sub myhtml_tag_index_next(TagIndexNode)
 #| @return myhtml_tag_index_node_t* if exists, otherwise a NULL value.
 sub myhtml_tag_index_prev(TagIndexNode)
     returns TagIndexNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1095,7 +1095,7 @@ sub myhtml_tag_index_prev(TagIndexNode)
 #| @return myhtml_tree_node_t* if exists, otherwise a NULL value.
 sub myhtml_tag_index_tree_node(TagIndexNode)
     returns TreeNode
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1107,7 +1107,7 @@ sub myhtml_tag_index_tree_node(TagIndexNode)
 #| @return count of elements
 sub myhtml_tag_index_entry_count(TagIndex, int32)
     returns size_t
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1119,21 +1119,21 @@ sub myhtml_tag_index_entry_count(TagIndex, int32)
 #| @return myhtml_collection_t* if successful, otherwise an NULL value
 sub myhtml_collection_create(size_t, int32 is rw)
     returns Collection
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
 #| Clears collection
 #|
 #| @param[in] myhtml_collection_t*
-sub myhtml_collection_clean(Collection) is native(&lib) { * }
+sub myhtml_collection_clean(Collection) is native('myhtml') { * }
 
 #| Destroy allocated resources
 #|
 #| @param[in] myhtml_collection_t*
 #|
 #| @return NULL if successful, otherwise an myhtml_collection_t* structure
-sub myhtml_collection_destroy(Collection) is native(&lib) { * }
+sub myhtml_collection_destroy(Collection) is native('myhtml') { * }
 
 #| Check size by length and increase if necessary
 #|
@@ -1143,7 +1143,7 @@ sub myhtml_collection_destroy(Collection) is native(&lib) { * }
 #| @return NULL if successful, otherwise an myhtml_collection_t* structure
 sub myhtml_collection_check_size(Collection, size_t)
     returns int32
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1160,7 +1160,7 @@ sub myhtml_collection_check_size(Collection, size_t)
 #| @return size character set
 sub codepoint-to-utf16(size_t, Str)
     returns size_t
-    is native(&lib)
+    is native('myhtml')
     is symbol<myhtml_encoding_codepoint_to_ascii_utf_16>
     is export
     { * }
@@ -1178,7 +1178,7 @@ sub codepoint-to-utf16(size_t, Str)
 #| @return true if encoding found, otherwise false
 sub myhtml_encoding_detect(CArray[uint8], size_t, int32 is rw)
     returns bool
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1193,7 +1193,7 @@ sub myhtml_encoding_detect(CArray[uint8], size_t, int32 is rw)
 #| @return true if encoding found, otherwise false
 sub myhtml_encoding_detect_russian(CArray[uint8], size_t, int32 is rw)
     returns bool
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1208,7 +1208,7 @@ sub myhtml_encoding_detect_russian(CArray[uint8], size_t, int32 is rw)
 #| @return true if encoding found, otherwise false
 sub mythml_encoding_detect_unicode(CArray[uint8], size_t, int32 is rw)
     returns bool
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1223,7 +1223,7 @@ sub mythml_encoding_detect_unicode(CArray[uint8], size_t, int32 is rw)
 #| @return true if encoding found, otherwise false
 sub myhtml_encoding_detect_bom(CArray[uint8], size_t, int32 is rw)
     returns bool
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1240,7 +1240,7 @@ sub myhtml_encoding_detect_bom(CArray[uint8], size_t, int32 is rw)
 #| @return true if encoding found, otherwise false
 sub myhtml_encoding_detect_and_cut_bom(CArray[uint8], size_t, int32 is rw, CArray[uint8] is rw, size_t is rw)
     returns bool
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1264,7 +1264,7 @@ sub myhtml_encoding_detect_and_cut_bom(CArray[uint8], size_t, int32 is rw, CArra
 #| @return char* of the size if successful, otherwise a NULL value
 sub myhtml_string_init(MCharAsync, size_t, String, size_t)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1278,7 +1278,7 @@ sub myhtml_string_init(MCharAsync, size_t, String, size_t)
 #| @return char* of the size if successful, otherwise a NULL value
 sub myhtml_string_realloc(MCharAsync, size_t, String, size_t)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1287,7 +1287,7 @@ sub myhtml_string_realloc(MCharAsync, size_t, String, size_t)
 #|
 #| @param[in] myhtml_string_t*. See description for myhtml_string_init function
 sub myhtml_string_clean(String)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1295,7 +1295,7 @@ sub myhtml_string_clean(String)
 #|
 #| @param[in] myhtml_string_t*. See description for myhtml_string_init function
 sub myhtml_string_clean_all(String)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1307,7 +1307,7 @@ sub myhtml_string_clean_all(String)
 #| @return NULL if destroy_obj set true, otherwise a current myhtml_string_t object
 sub myhtml_string_destroy(String, bool)
     returns String
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1318,7 +1318,7 @@ sub myhtml_string_destroy(String, bool)
 #| @return char* if exists, otherwise a NULL value
 sub myhtml_string_data(String)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1329,7 +1329,7 @@ sub myhtml_string_data(String)
 #| @return data length
 sub myhtml_string_length(String)
     returns size_t
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1340,7 +1340,7 @@ sub myhtml_string_length(String)
 #| @return data size
 sub myhtml_string_size(String)
     returns size_t
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1361,7 +1361,7 @@ sub myhtml_string_size(String)
 #| @return assigned data if successful, otherwise a NULL value
 sub myhtml_string_data_set(String, Str)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1373,7 +1373,7 @@ sub myhtml_string_data_set(String, Str)
 #| @return assigned size
 sub myhtml_string_size_set(String, size_t)
     returns size_t
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1385,7 +1385,7 @@ sub myhtml_string_size_set(String, size_t)
 #| @return assigned length
 sub myhtml_string_length_set(String, size_t)
     returns size_t
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1399,7 +1399,7 @@ sub myhtml_string_length_set(String, size_t)
 #| @return data if successful, otherwise a NULL value
 sub myhtml_string_data_alloc(MCharAsync, size_t, size_t)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1414,7 +1414,7 @@ sub myhtml_string_data_alloc(MCharAsync, size_t, size_t)
 #| @return data if successful, otherwise a NULL value
 sub myhtml_string_data_realloc(MCharAsync, size_t, Str, size_t, size_t)
     returns Str
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }
 
@@ -1426,6 +1426,6 @@ sub myhtml_string_data_realloc(MCharAsync, size_t, Str, size_t, size_t)
 #|
 #| @return data if successful, otherwise a NULL value
 sub myhtml_string_data_free(MCharAsync, size_t, Str)
-    is native(&lib)
+    is native('myhtml')
     is export
     { * }

@@ -3,7 +3,7 @@
 A wrapper for [MyHTML](http://lexborisov.github.io/myhtml/) an HTML parser.
 
 ## Usage
-
+First you need to [install](https://github.com/lexborisov/myhtml#build-and-installation) MyHTML. Then install this module via:
 ```
 panda install HTML::MyHTML
 ```
