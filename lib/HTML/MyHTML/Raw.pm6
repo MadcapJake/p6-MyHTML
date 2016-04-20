@@ -35,10 +35,10 @@ class MyHTML is repr<CStruct> {
 }
 
 class FILE is repr<CPointer> is export {
-    sub fdopen(int64, Str) returns FILE is native { * }
-    method new(int64(Int) $fd) {
-        fdopen($fd, "w");
-    }
+  sub fdopen(int64, Str) returns FILE is native { * }
+  sub fopen(Str, Str) returns FILE is native { * }
+  method fd(Int $fd) { fdopen($fd, "w+") }
+  method path(Str $path) { fopen($path, "w+") }
 }
 
 class Attribute is repr<CPointer> {}
@@ -449,7 +449,7 @@ sub myhtml_tree_print_by_node(Tree, TreeNode, FILE, size_t)
 #| @param[in] myhtml_tree_node_t*
 #| @param[in] file handle, for example use stdout
 #| @param[in] tab (\t) increment for pretty print, set 0
-sub myhtml_tree_print_node_childs(Tree, TreeNode, Pointer, size_t)
+sub myhtml_tree_print_node_childs(Tree, TreeNode, FILE, size_t)
     is native(&lib)
     is export
     { * }
