@@ -2,7 +2,6 @@ unit module HTML::MyHTML::Raw;
 
 use NativeCall;
 
-use HTML::MyHTML::Lib;
 use HTML::MyHTML::Status;
 
 =head2 Structs, Enums & Pointers
