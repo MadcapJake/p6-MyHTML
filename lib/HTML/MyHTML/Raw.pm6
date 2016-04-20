@@ -34,11 +34,17 @@ class MyHTML is repr<CStruct> {
 
 }
 
+#| A simple helper to build native pointers to files/stdout
 class FILE is repr<CPointer> is export {
-  sub fdopen(int64, Str) returns FILE is native { * }
-  sub fopen(Str, Str) returns FILE is native { * }
-  method fd(Int $fd) { fdopen($fd, "w+") }
-  method path(Str $path) { fopen($path, "w+") }
+  sub fdopen(int64, Blob) returns FILE is native { * }
+  sub fopen(Str, Blob) returns FILE is native { * }
+  sub setvbuf(FILE, Blob, int64) returns int64 is native { * }
+  method fd(Int $fd) {
+    my $fh = fdopen($fd, "w+".encode);
+    setvbuf($fh, Blob, 2) if $fd == 1;
+    return $fh;
+  }
+  method path(Str $path) { fopen($path, "w+".encode) }
 }
 
 class MyAttribute is repr<CPointer> {}
@@ -901,8 +907,8 @@ sub myhtml_attribute_value(MyAttribute)
 #| @param[in] attr key name length
 #|
 #| @return myhtml_tree_attr_t* if exists, otherwise a NULL value
-sub myhtml_attribute_by_key(TreeNode, CArray[uint8], size_t)
-    returns Str
+sub myhtml_attribute_by_key(TreeNode, Blob, size_t)
+    returns MyAttribute
     is native(&lib)
     is export
     { * }
