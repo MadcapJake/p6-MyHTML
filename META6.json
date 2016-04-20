@@ -14,7 +14,7 @@
   "depends" : [ ],
   "description" : "wrapper for MyHTML, a fast HTML parsing C library",
   "test-depends" : [ ],
-  "version" : "0.1.0",
+  "version" : "0.2.0",
   "authors" : [
     "Jake Russo"
   ]
