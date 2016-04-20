@@ -57,21 +57,31 @@ class String is repr<CStruct> {
   has size_t $.node-idx;
 }
 
-class TreeNode is repr<CStruct> {
-  has int32 $.flags;
+class TokenNode is repr<CStruct> {
+  has int64   $.tag-ctx-idx;
+  has String  $.my-str-tm;
+  has size_t  $.begin;
+  has size_t  $.length;
+  has Pointer $.attr-first;
+  has Pointer $.attr-last;
+  has int64   $.type;
+}
 
-  has int32 $.tag-idx;
-  has int32 $.my-namespace;
+class TreeNode is repr<CStruct> {
+  has int64 $.flags;
+
+  has int64 $.tag-idx;
+  has int64 $.my-namespace;
 
   has TreeNode $.prev;
   has TreeNode $.next;
   has TreeNode $.child;
   has TreeNode $.parent;
 
-  has TreeNode $.last-child;
-
-  has Pointer $.token;
+  has TreeNode  $.last-child;
+  has TokenNode $.token;
 }
+
 class Tag is repr<CStruct> {}
 class TagIndex is repr<CPointer> {}
 class TagIndexEntry is repr<CStruct> {}
@@ -1078,7 +1088,7 @@ sub myhtml_tag_index_tree_node(TagIndexNode)
 #|
 #| @return count of elements
 sub myhtml_tag_index_entry_count(TagIndex, int32)
-    returns TreeNode
+    returns size_t
     is native(&lib)
     is export
     { * }
