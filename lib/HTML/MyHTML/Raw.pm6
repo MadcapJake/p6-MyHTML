@@ -227,7 +227,7 @@ sub myhtml_destroy(Pointer) is native('myhtml') is export { * }
 #| All input character encoding decode to utf-8
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse(Tree, int32, CArray[uint8], size_t)
+sub myhtml_parse(Tree, int32, Blob, size_t)
     returns int32
     is native('myhtml')
     is export
@@ -262,7 +262,7 @@ sub myhtml_parse_fragment(Tree, int32, Blob, size_t, int32, int32)
 #| All input character encoding decode to utf-8
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse_single(Tree, int32, CArray[uint8], size_t)
+sub myhtml_parse_single(Tree, int32, Blob, size_t)
     returns int32
     is native('myhtml')
     is export
@@ -281,7 +281,7 @@ sub myhtml_parse_single(Tree, int32, CArray[uint8], size_t)
 #| All input character encoding decode to utf-8
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse_fragment_single(Tree, int32, CArray[uint8], size_t, int32, int32)
+sub myhtml_parse_fragment_single(Tree, int32, Blob, size_t, int32, int32)
     returns int32
     is native('myhtml')
     is export
@@ -294,7 +294,7 @@ sub myhtml_parse_fragment_single(Tree, int32, CArray[uint8], size_t, int32, int3
 #| @param[in] HTML size
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse_chunk(Tree, CArray[uint8], size_t)
+sub myhtml_parse_chunk(Tree, Blob, size_t)
     returns int32
     is native('myhtml')
     is export
@@ -309,7 +309,7 @@ sub myhtml_parse_chunk(Tree, CArray[uint8], size_t)
 #| @param[in] fragment NAMESPACE. Default: MyHTML_NAMESPACE_HTML if set 0
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse_chunk_fragment(Tree, CArray[uint8], size_t, int32, int32)
+sub myhtml_parse_chunk_fragment(Tree, Blob, size_t, int32, int32)
     returns int32
     is native('myhtml')
     is export
@@ -323,7 +323,7 @@ sub myhtml_parse_chunk_fragment(Tree, CArray[uint8], size_t, int32, int32)
 #| @param[in] HTML size
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse_chunk_single(Tree, CArray[uint8], size_t)
+sub myhtml_parse_chunk_single(Tree, Blob, size_t)
     returns int32
     is native('myhtml')
     is export
@@ -339,7 +339,7 @@ sub myhtml_parse_chunk_single(Tree, CArray[uint8], size_t)
 #| @param[in] fragment NAMESPACE. Default: MyHTML_NAMESPACE_HTML if set 0
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_parse_chunk_fragment_single(Tree, CArray[uint8], size_t, int32, int32)
+sub myhtml_parse_chunk_fragment_single(Tree, Blob, size_t, int32, int32)
     returns int32
     is native('myhtml')
     is export
@@ -526,7 +526,7 @@ sub myhtml_get_nodes_by_tag_id(Tree, Collection, int32, int32)
 #| @param[out] status of this operation
 #|
 #| @return myhtml_collection_t* if successful, otherwise an NULL value
-sub myhtml_get_nodes_by_name(Tree, Collection, CArray[uint8], size_t, int32)
+sub myhtml_get_nodes_by_name(Tree, Collection, Blob, size_t, int32)
     returns Collection
     is native('myhtml')
     is export
@@ -715,7 +715,7 @@ sub myhtml_node_insert_before(Tree, TreeNode, TreeNode)
 #| @param[in] character encoding
 #|
 #| @return myhtml_string_t* if successful, otherwise a NULL value
-sub myhtml_node_text_set(Tree, TreeNode, CArray[uint8], size_t, int32)
+sub myhtml_node_text_set(Tree, TreeNode, Blob, size_t, int32)
     returns String
     is native('myhtml')
     is export
@@ -731,7 +731,7 @@ sub myhtml_node_text_set(Tree, TreeNode, CArray[uint8], size_t, int32)
 #| @param[in] character encoding
 #|
 #| @return myhtml_string_t* if successful, otherwise a NULL value
-sub myhtml_node_text_set_with_charef(Tree, TreeNode, CArray[uint8], size_t, int32)
+sub myhtml_node_text_set_with_charef(Tree, TreeNode, Blob, size_t, int32)
     returns String
     is native('myhtml')
     is export
@@ -779,7 +779,7 @@ sub myhtml_tag_name_by_id(Tree, int32)
 #| @param[in] tag name length
 #|
 #| @return tag id
-sub myhtml_tag_id_by_name(Tree, CArray[uint8], size_t)
+sub myhtml_tag_id_by_name(Tree, Blob, size_t)
     returns int32
     is native('myhtml')
     is export
@@ -1176,7 +1176,7 @@ sub codepoint-to-utf16(size_t, Str)
 #| @param[out] detected encoding
 #|
 #| @return true if encoding found, otherwise false
-sub myhtml_encoding_detect(CArray[uint8], size_t, int32 is rw)
+sub myhtml_encoding_detect(Blob, size_t, int32 is rw)
     returns bool
     is native('myhtml')
     is export
@@ -1191,7 +1191,7 @@ sub myhtml_encoding_detect(CArray[uint8], size_t, int32 is rw)
 #| @param[out] detected encoding
 #|
 #| @return true if encoding found, otherwise false
-sub myhtml_encoding_detect_russian(CArray[uint8], size_t, int32 is rw)
+sub myhtml_encoding_detect_russian(Blob, size_t, int32 is rw)
     returns bool
     is native('myhtml')
     is export
@@ -1206,7 +1206,7 @@ sub myhtml_encoding_detect_russian(CArray[uint8], size_t, int32 is rw)
 #| @param[out] detected encoding
 #|
 #| @return true if encoding found, otherwise false
-sub mythml_encoding_detect_unicode(CArray[uint8], size_t, int32 is rw)
+sub mythml_encoding_detect_unicode(Blob, size_t, int32 is rw)
     returns bool
     is native('myhtml')
     is export
@@ -1221,7 +1221,7 @@ sub mythml_encoding_detect_unicode(CArray[uint8], size_t, int32 is rw)
 #| @param[out] detected encoding
 #|
 #| @return true if encoding found, otherwise false
-sub myhtml_encoding_detect_bom(CArray[uint8], size_t, int32 is rw)
+sub myhtml_encoding_detect_bom(Blob, size_t, int32 is rw)
     returns bool
     is native('myhtml')
     is export
@@ -1238,7 +1238,7 @@ sub myhtml_encoding_detect_bom(CArray[uint8], size_t, int32 is rw)
 #| @param[out] new size position
 #|
 #| @return true if encoding found, otherwise false
-sub myhtml_encoding_detect_and_cut_bom(CArray[uint8], size_t, int32 is rw, CArray[uint8] is rw, size_t is rw)
+sub myhtml_encoding_detect_and_cut_bom(Blob, size_t, int32 is rw, Blob is rw, size_t is rw)
     returns bool
     is native('myhtml')
     is export
