@@ -5,11 +5,10 @@
   "resources" : [ ],
   "build-depends" : [ ],
   "provides" : {
-    "HTML::MyHTML::Raw" : "lib/HTML/MyHTML/Raw.pm6",
-    "HTML::MyHTML::Tag" : "lib/HTML/MyHTML/Tag.pm6",
+    "HTML::MyHTML::Raw"      : "lib/HTML/MyHTML/Raw.pm6",
+    "HTML::MyHTML::Tag"      : "lib/HTML/MyHTML/Tag.pm6",
     "HTML::MyHTML::Encoding" : "lib/HTML/MyHTML/Encoding.pm6",
-    "HTML::MyHTML" : "lib/HTML/MyHTML.pm6",
-    "HTML::MyHTML::Status" : "lib/HTML/MyHTML/Status.pm6"
+    "HTML::MyHTML"           : "lib/HTML/MyHTML.pm6"
   },
   "depends" : [ ],
   "description" : "wrapper for MyHTML, a fast HTML parsing C library",
