@@ -17,13 +17,16 @@ my $tree = myhtml_tree_create();
 myhtml_tree_init($tree, $myhtml);
 
 # parse html
-myhtml_parse_fragment($tree, 0, $chs, nativesizeof($chs) + 2, 0x02a, 0x01);
+myhtml_parse_fragment($tree, 0, $chs, $chs.elems * 8, 0x02a, 0x01);
 
 # get first DIV from index
 my $tag-idx = myhtml_tree_get_tag_index($tree);
 my $idx-node = myhtml_tag_index_first($tag-idx, 0x02a);
-
 my $node = myhtml_tag_index_tree_node($idx-node);
+
+# debugging
+say myhtml_node_tag_id($node); #= segfaults
+say myhtml_tag_index_entry_count($tag-idx, 0x02a);
 
 # print original tree
 say "Original tree:";
@@ -43,20 +46,24 @@ for ^100_000 {
   myhtml_attribute_delete($tree, $node, $attr);
 }
 
-=finish
+=begin NotUsing
 # add first attr in first div in tree
-myhtml_attribute_add($tree, $node, "key", 3, "value", 5, 0x00);
+my CArray[uint] $key   .= new("key".encode.list);
+my CArray[uint] $value .= new("value".encode.list);
+my $add-status = myhtml_attribute_add($tree, $node, $key, $key.elems * 8, $value, $value.elems * 8, 0x00);
 
 say "Modified tree:";
 myhtml_tree_print_node_childs(
   $tree,
   myhtml_tree_get_document($tree),
-  FILE.new(1),
+  FILE.fd(1),
   0
 );
+=end NotUsing
 
+=for other
 # get attr by key name
-my $gets-attr = myhtml_attribute_by_key($node, "key", 3);
+my $gets-attr = myhtml_attribute_by_key($node, $key, 3);
 my Str $attr-char = myhtml_attribute_value($gets-attr);
 say "Get attr by key name\n key: $attr-char";
 
