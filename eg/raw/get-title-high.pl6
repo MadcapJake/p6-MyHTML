@@ -2,6 +2,8 @@ use v6.c;
 use lib 'lib';
 
 use HTML::MyHTML::Raw;
+use HTML::MyHTML::Tag;
+use HTML::MyHTML::Encoding;
 
 # basic init
 my $myhtml = myhtml_create();
@@ -15,10 +17,10 @@ myhtml_tree_init($tree, $myhtml);
 my $website = qx{curl -s http://www.example.com}.encode;
 
 # parse html
-myhtml_parse($tree, 0, $website, $website.bytes);
+myhtml_parse($tree, Enc<utf-8>, $website, $website.bytes);
 
 # collect title tags
-my $collection = myhtml_get_nodes_by_tag_id($tree, Collection, 0x086, 0);
+my $collection = myhtml_get_nodes_by_tag_id($tree, Collection, Tag<title>, 0);
 
 with $collection {
   my $text-node = myhtml_node_child($_.list[0]);
