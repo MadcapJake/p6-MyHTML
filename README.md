@@ -14,6 +14,7 @@ zef install HTML::MyHTML
 Currently only provides a NativeCall interface:
 ```perl6
 use HTML::MyHTML::Raw;
+use HTML::MyHTML::Encoding;
 
 my $html = "<div><span>HTML</span></div>".encode;
 
@@ -26,7 +27,7 @@ my $tree = myhtml_tree_create();
 myhtml_tree_init($tree, $myhtml);
 
 # parse html
-myhtml_parse($tree, 0, $html, $html.bytes);
+myhtml_parse($tree, Enc<utf-8>, $html, $html.bytes);
 
 # release resources
 myhtml_tree_destroy($tree);
