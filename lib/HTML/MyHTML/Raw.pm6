@@ -36,15 +36,15 @@ class MyHTML is repr<CStruct> {
 
 #| A simple helper to build native pointers to files/stdout
 class FILE is repr<CPointer> is export {
-  sub fdopen(int64, Blob) returns FILE is native { * }
-  sub fopen(Str, Blob) returns FILE is native { * }
+  sub fdopen(int64, Str) returns FILE is native { * }
+  sub fopen(Str, Str) returns FILE is native { * }
   sub setvbuf(FILE, Blob, int64) returns int64 is native { * }
   method fd(Int $fd) {
-    my $fh = fdopen($fd, "w+".encode);
+    my $fh = fdopen($fd, "w+");
     setvbuf($fh, Blob, 2) if $fd == 1;
     return $fh;
   }
-  method path(Str $path) { fopen($path, "w+".encode) }
+  method path(Str $path) { fopen($path, "w+") }
 }
 
 class MyAttribute is repr<CPointer> {}
