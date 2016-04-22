@@ -40,7 +40,7 @@ my %encodings =
   x_mac_cyrillic   => 0x24;
 
 class Enc is export {
-  has $.default = %encodings<default>;
+  my $.default = %encodings<default>;
   method AT-KEY(Str $enc --> int) {
     %encodings{$enc.lc.trans(['-'] => ['_'])}
   }
