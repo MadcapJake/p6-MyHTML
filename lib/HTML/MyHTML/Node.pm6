@@ -6,7 +6,7 @@ has TreeNode $.raw;
 has Tree $!tree;
 
 method create(:$tree, :$tag, :$ns) {
-  self.bless :raw(myhtml_node_create($tree, $tag, $ns)) :$tree
+  self.bless(:raw(myhtml_node_create($tree, $tag, $ns)) :$tree)
 }
 
 method next { myhtml_node_next($!raw) }
