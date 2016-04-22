@@ -95,5 +95,5 @@ class HTML::MyHTML is export {
       $ns // Namespace.default
     );
   }
-  method chunk-end { myhtml_parse_chunk_end($!tree) }
+  method chunk-end { myhtml_parse_chunk_end($!tree.raw) }
 }
