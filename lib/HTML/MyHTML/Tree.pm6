@@ -70,20 +70,17 @@ multi method print(
 
 method root { myhtml_node_first($!raw) }
 
-method nodes(
-  Str :$tag! is rw,
-  HTML::MyHTML::Collection :collection(:$co)
-) {
+method nodes(Str $tag, HTML::MyHTML::Collection :collection(:$co)) {
   return $co.add($!raw, $tag) if $co.defined;
   my int64 $status;
   my $coll = do if Tag.{$tag}:exists {
     myhtml_get_nodes_by_tag_id($!raw, Collection, Tag.{$tag}, $status);
   } else {
-    $tag .= encode;
-    myhtml_get_nodes_by_name($!raw, Collection, $tag, $tag.bytes, $status);
+    my $b = $tag.encode('UTF-8');
+    myhtml_get_nodes_by_name($!raw, Collection, $b, $b.bytes, $status);
   }
   # TODO: Implement MyHTML X exception classes
   if $status == 0 {
-    return HTML::MyHTML::Collection.new :raw($coll) :tree($!raw)
+    return HTML::MyHTML::Collection.new: :raw($coll) :tree($!raw)
   } else { return $status }
 }
