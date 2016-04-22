@@ -258,4 +258,7 @@ my %tags =
 
 class Tag is export {
   method AT-KEY(Str $tag-name --> int) { %tags{$tag-name.lc} }
+  method EXISTS-KEY(Str $tag-name --> Bool) {
+    %tags{$tag-name.lc}:exists
+  }
 }

@@ -1,40 +1,99 @@
 unit module HTML::MyHTML;
 
-use HTML::MyHTML::NativeCall;
+use HTML::MyHTML::Raw;
+
+use HTML::MyHTML::Encoding;
+use HTML::MyHTML::Namespace;
+use HTML::MyHTML::Tag;
 use HTML::MyHTML::Tree;
 
 class HTML::MyHTML is export {
 
-  has MyHTML $!myhtml;
-  has Tree $.tree is rw;
+  has MyHTML $!raw;
+  has HTML::MyHTML::Tree $.tree;
 
-  submethod BUILD {
-    $!myhtml = MyHTML.new :opt(PARSE_MODE_SEPARATELY);
-    $!tree = Tree.new: $!myhtml;
+  submethod BUILD(:$threads = 1, :$queue-size = 4096) {
+    $!raw = myhtml_create();
+    myhtml_init($!raw, 0, $threads, $queue-size);
+    $!tree .= new(myhtml => $!raw);
   }
 
-  method clean { $!tree.clean; $!myhtml.clean }
-  method dispose { $!tree.dispose; $!myhtml.dispose }
+  method clean {
+    $!tree.clean;
+    myhtml_clean($!raw);
+  }
+  method dispose {
+    $!tree.dispose;
+    myhtml_destroy($!raw);
+  }
+
   multi method parse($html, :$enc) {
-    $!myhtml.parse: $html, :$!tree, :$enc
+    myhtml_parse(
+      $!tree,
+      $enc // Enc.default,
+      $html.encode,
+      $html.encode.bytes
+    );
   }
   multi method parse($html, :$fragment, :$base, :$ns, :$enc) {
-    $!myhtml.parse: $html, :$!tree, :$fragment, :$base, :$ns, :$enc
+    myhtml_parse_fragment(
+      $!tree,
+      $enc // Enc.default,
+      $html.encode,
+      $html.encode.bytes,
+      $base // Tag.default,
+      $ns // Namespace.default
+    );
   }
   multi method parse($html, :$single, :$enc) {
-    $!myhtml.parse: $html, :$!tree, :$single, :$enc
+    myhtml_parse_single(
+      $!tree,
+      $enc // Enc.default,
+      $html.encode,
+      $html.encode.bytes
+    );
   }
   multi method parse($html, :$fragment, :$single, :$base, :$ns, :$enc) {
-    $!myhtml.parse: $html, :$!tree, :$fragment, :$single, :$base, :$ns, :$enc
+    myhtml_parse_fragment_single(
+      $!tree,
+      $enc // Enc.default,
+      $html.encode,
+      $html.encode.bytes,
+      $base // Tag.default,
+      $ns // Namespace.default
+    );
   }
   multi method parse($html, :$chunk) {
-    $!myhtml.parse: $html, :$!tree, :$chunk
+    myhtml_parse_chunk(
+      $!tree,
+      $html.encode,
+      $html.encode.bytes
+    );
   }
   multi method parse($html, :$chunk, :$fragment, :$base, :$ns, :$enc) {
-    $!myhtml.parse: $html, :$!tree, :$chunk, :$fragment, :$base, :$ns, :$enc
+    myhtml_parse_chunk_fragment(
+      $!tree,
+      $html.encode,
+      $html.encode.bytes,
+      $base // Tag.default,
+      $ns // Namespace.default
+    );
   }
   multi method parse($html, :$chunk, :$single) {
-    $!myhtml.parse: $html, :$!tree, :$chunk, :$single
+    myhtml_parse_chunk_single(
+      $!tree,
+      $html.encode,
+      $html.encode.bytes
+    );
   }
-  method chunk-end { $!myhtml.chunk-end($!tree) }
+  multi method parse($html, :$chunk, :$single, :$base, :$ns) {
+    myhtml_parse_chunk_fragment_single(
+      $!tree,
+      $html.encode,
+      $html.encode.bytes,
+      $base // Tag.default,
+      $ns // Namespace.default
+    );
+  }
+  method chunk-end { myhtml_parse_chunk_end($!tree) }
 }

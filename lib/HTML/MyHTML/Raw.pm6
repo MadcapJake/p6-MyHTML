@@ -18,7 +18,7 @@ enum MyHTMLOptions (
 
 class MCharAsync is repr<CPointer> {}
 
-class MyHTML is repr<CStruct> {
+class MyHTML is repr<CStruct> is export {
 
   has Pointer #`{mythread_t*}       $.thread;
   has Pointer #`{mcobject_async_t*} $.async_incoming_buf;
@@ -72,7 +72,7 @@ class TokenNode is repr<CStruct> {
   has int64   $.type;
 }
 
-class TreeNode is repr<CStruct> {
+class TreeNode is repr<CStruct> is export {
   has int64 $.flags;
 
   has int64 $.tag-idx;
@@ -111,7 +111,7 @@ class TreeDocType is repr<CStruct> {
   has Str  $.attr_system;
 }
 
-class Tree is repr<CStruct> {
+class Tree is repr<CStruct> is export {
   # ref
   has Pointer #`{myhtml_t*}                    $.myhtml;
   has Pointer #`{mchar_async_t*}               $.mchar;
@@ -586,7 +586,7 @@ sub myhtml_node_parent(TreeNode)
 #| @param[in] myhtml_tree_node_t*
 #|
 #| @return myhtml_tree_node_t* if exists, otherwise an NULL value
-sub myhtml_node_child(Pointer)
+sub myhtml_node_child(TreeNode)
     returns TreeNode
     is native('myhtml')
     is export
@@ -631,7 +631,7 @@ sub myhtml_node_free(Tree, TreeNode)
 #| @param[in] myhtml_tree_node_t*
 #|
 #| @return myhtml_tree_node_t* if successful, otherwise a NULL value
-sub myhtml_node_remove(Tree, TreeNode)
+sub myhtml_node_remove(TreeNode)
     returns TreeNode
     is native('myhtml')
     is export
