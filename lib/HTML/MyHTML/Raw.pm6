@@ -181,7 +181,7 @@ class Tree is repr<CStruct> is export {
 #|
 #| @return myhtml_t* if successful, otherwise an NULL value.
 sub myhtml_create()
-    returns Pointer
+    returns MyHTML
     is native('myhtml')
     is export
     { * }
@@ -199,7 +199,7 @@ sub myhtml_create()
 #| specified number here. Default: 4096
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status value.
-sub myhtml_init(Pointer, int32, size_t, size_t)
+sub myhtml_init(MyHTML, int32, size_t, size_t)
     returns int32
     is native('myhtml')
     is export
@@ -214,7 +214,7 @@ sub myhtml_clean(MyHTML) is native('myhtml') is export { * }
 #|
 #| @param[in] myhtml_t*
 #| @return NULL if successful, otherwise an MyHTML structure.
-sub myhtml_destroy(Pointer) is native('myhtml') is export { * }
+sub myhtml_destroy(MyHTML) is native('myhtml') is export { * }
 
 #| Parsing HTML
 #|
