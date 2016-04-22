@@ -6,7 +6,7 @@ use HTML::MyHTML::Collection;
 use HTML::MyHTML::Node;
 use HTML::MyHTML::Tag;
 
-has Tree $!raw;
+has Tree $.raw;
 
 submethod BUILD(:$myhtml) {
   $!raw = myhtml_tree_create();
