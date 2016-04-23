@@ -1007,6 +1007,8 @@ sub myhtml_tag_index_entry_count(TagIndex, int32)
     is export
     { * }
 
+=head3 Collection
+
 #| Create collection
 #|
 #| @param[in] list size
