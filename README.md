@@ -11,7 +11,28 @@ panda install HTML::MyHTML
 zef install HTML::MyHTML
 ```
 ### Example
-Currently only provides a NativeCall interface:
+#### HTML::MyHTML
+```perl6
+use HTML::MyHTML;
+
+my $html = "<div><span>HTML</span></div>";
+
+# init
+my HTML::MyHTML $parser .= new;
+
+# parse
+$parser.parse($html);
+
+# print tree
+$parser.tree.print($parser.tree.document):i;
+
+# print span text
+$parser.tree.nodes('span')[0].child.text.say;
+
+# dispose
+$parser.dispose;
+```
+#### HTML::MyHTML::Raw
 ```perl6
 use HTML::MyHTML::Raw;
 use HTML::MyHTML::Encoding;
