@@ -18,9 +18,7 @@ my @collection := $parser.tree.nodes('title');
 # take first node in collection
 my $node = @collection[0];
 
-# $parser.tree.print($node):i;
-
-say "Title: {@collection[0].Str}";
+say "Title: {@collection[0].child.Str}";
 
 @collection.dispose;
 $parser.dispose;
