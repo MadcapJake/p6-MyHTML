@@ -1,8 +1,8 @@
-unit class HTML::MYHTML::Node;
+unit class HTML::MyHTML::Node;
 
 use HTML::MyHTML::Raw;
 
-has TreeNode $.raw;
+has $.raw;
 has Tree $!tree;
 
 method create(:$tree, :$tag, :$ns) {
@@ -27,4 +27,11 @@ method delete(Bool :recursive(:rec(:$r))) {
   !$r
     ?? myhtml_node_delete($!tree, $!raw)
     !! myhtml_node_delete_recursive($!tree, $!raw);
+}
+
+method Str {;
+  my $mystring = myhtml_node_string($!raw);
+  say $mystring.data;
+  say myhtml_string_data($mystring);
+  say myhtml_string_length($mystring);
 }

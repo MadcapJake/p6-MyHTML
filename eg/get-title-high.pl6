@@ -1,7 +1,7 @@
 use v6.c;
-use lib '../lib';
+use lib 'lib';
 
-use HTML::MyHTML
+use HTML::MyHTML;
 
 # basic init
 my HTML::MyHTML $parser .= new;
@@ -13,11 +13,14 @@ my $website = qx{curl -s http://www.example.com};
 $parser.parse($website);
 
 # collect title tags
-my @collection = $parser.tree.nodes:tag<title>;
+my @collection := $parser.tree.nodes('title');
 
-$parser.tree.print(@collection[0])
+# take first node in collection
+my $node = @collection[0];
 
-# say "Title: {@collection[0].Str}"
+# $parser.tree.print($node):i;
+
+say "Title: {@collection[0].Str}";
 
 @collection.dispose;
 $parser.dispose;

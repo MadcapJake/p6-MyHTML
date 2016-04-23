@@ -18,20 +18,7 @@ enum MyHTMLOptions (
 
 class MCharAsync is repr<CPointer> {}
 
-class MyHTML is repr<CStruct> is export {
-
-  has Pointer #`{mythread_t*}       $.thread;
-  has Pointer #`{mcobject_async_t*} $.async_incoming_buf;
-  has MCharAsync                    $.mchar; # for all
-  has Pointer #`{mcobject_async_t*} $.tag_index;
-
-  has Pointer #`{myhtml_tokenizer_state_f*} $.parse_state_func;
-  has Pointer #`{myhtml_insertion_f*}       $.insertion_func;
-
-  has int32 #`{enum myhtml_options}   $.opt;
-  has Pointer #`{myhtml_tree_node_t*} $.marker;
-
-}
+class MyHTML is repr<CPointer> is export {}
 
 #| A simple helper to build native pointers to files/stdout
 class FILE is repr<CPointer> is export {
@@ -54,7 +41,7 @@ class Collection is repr<CStruct> is export {
   has size_t $.length;
 }
 
-class String is repr<CStruct> {
+class MyString is repr<CStruct> {
   has Str $.data;
   has size_t $.size;
   has size_t $.length;
@@ -62,30 +49,7 @@ class String is repr<CStruct> {
   has size_t $.node-idx;
 }
 
-class TokenNode is repr<CStruct> {
-  has int64   $.tag-ctx-idx;
-  has String  $.my-str-tm;
-  has size_t  $.begin;
-  has size_t  $.length;
-  has Pointer $.attr-first;
-  has Pointer $.attr-last;
-  has int64   $.type;
-}
-
-class TreeNode is repr<CStruct> is export {
-  has int64 $.flags;
-
-  has int64 $.tag-idx;
-  has int64 $.my-namespace;
-
-  has TreeNode $.prev;
-  has TreeNode $.next;
-  has TreeNode $.child;
-  has TreeNode $.parent;
-
-  has TreeNode  $.last-child;
-  has TokenNode $.token;
-}
+class TreeNode is repr<CPointer> is export {}
 
 class Tag is repr<CStruct> {}
 class TagIndexNode is repr<CStruct> {
@@ -104,74 +68,7 @@ class TagIndex is repr<CStruct> {
   has size_t        $.tags-size;
 }
 
-class TreeDocType is repr<CStruct> {
-  has bool $.is_html;
-  has Str  $.attr_name;
-  has Str  $.attr_public;
-  has Str  $.attr_system;
-}
-
-class Tree is repr<CStruct> is export {
-  # ref
-  has Pointer #`{myhtml_t*}                    $.myhtml;
-  has Pointer #`{mchar_async_t*}               $.mchar;
-  has Pointer #`{myhtml_token_t*}              $.token;
-  has Pointer #`{mcobject_async_t*}            $.tree_obj;
-  has Pointer #`{mcsync_t*}                    $.sync;
-  has Pointer #`{mythread_queue_list_entry_t*} $.queue_entry;
-  has Pointer #`{mythread_queue_t*}            $.queue;
-  has Pointer #`{myhtml_tag_t*}                $.tags;
-
-  # init id's
-  has size_t                              $.mcasync_token_id;
-  has size_t                              $.mcasync_attr_id;
-  has size_t                              $.mcasync_tree_id;
-  has size_t                              $.mchar_node_id;
-  has size_t                              $.mcasync_incoming_buf_id;
-  has Pointer #`{myhtml_token_attr_t*}    $.attr_current;
-  has size_t  #`{myhtml_tag_id_t}         $.tmp_tag_id;
-  has Pointer #`{mythread_queue_node_t*}  $.current_qnode;
-  has Pointer #`{myhtml_incoming_buf_t*}  $.incoming_buf;
-  has Pointer #`{myhtml_incoming_buf_t*}  $.incoming_buf_first;
-
-  has Pointer #`{myhtml_tree_indexes_t*}  $.indexes;
-
-  # ref for nodes
-  has Pointer #`{myhtml_tree_node_t*}     $.document;
-  has Pointer #`{myhtml_tree_node_t*}     $.fragment;
-  has Pointer #`{myhtml_tree_node_t*}     $.node_head;
-  has Pointer #`{myhtml_tree_node_t*}     $.node_html;
-  has Pointer #`{myhtml_tree_node_t*}     $.node_body;
-  has Pointer #`{myhtml_tree_node_t*}     $.node_form;
-  HAS TreeDocType                         $.doctype;
-
-  # for build tree
-  has Pointer #`{myhtml_tree_list_t*}           $.active_formatting;
-  has Pointer #`{myhtml_tree_list_t*}           $.open_elements;
-  has Pointer #`{myhtml_tree_list_t*}           $.other_elements;
-  has Pointer #`{myhtml_tree_token_list_t*}     $.token_list;
-  has Pointer #`{myhtml_tree_insertion_list_t*} $.template_insertion;
-  has Pointer #`{myhtml_async_args_t*}          $.async_args;
-  has Pointer #`{myhtml_tree_temp_stream_t*}    $.temp_stream;
-  has Pointer #`{myhtml_token_node_t* volatile} $.token_last_done is rw;
-
-  # for detect namespace out of tree builder
-  has Pointer #`{myhtml_token_node_t*}          $.token_namespace;
-
-  # tree params
-  has int32 #`{enum myhtml_tokenizer_state}     $.state;
-  has int32 #`{enum myhtml_tokenizer_state}     $.state_of_builder;
-  has int32 #`{enum myhtml_insertion_mode}      $.insert_mode;
-  has int32 #`{enum myhtml_insertion_mode}      $.orig_insert_mode;
-  has int32 #`{enum myhtml_tree_compat_mode}    $.compat_mode;
-  has int32 #`{volatile enum myhtml_tree_flags} $.flags is rw;
-  has bool                                      $.foster_parenting;
-  has size_t                                    $.global_offset;
-
-  has int32 #`{myhtml_encoding_t}            $.encoding;
-  has int32 #`{myhtml_encoding_t}            $.encoding_usereq;
-  has int32 #`{myhtml_tree_temp_tag_name_t}  $.temp_tag_name;
-}
+class Tree is repr<CPointer> is export {}
 
 =head2 Subroutines
 
@@ -364,7 +261,7 @@ sub myhtml_tree_create() returns Tree is native('myhtml') is export { * }
 #| @param[in] workmyhtml_t*
 #|
 #| @return MyHTML_STATUS_OK if successful, otherwise an error status
-sub myhtml_tree_init(Tree, Pointer[MyHTML]) returns int32 is native('myhtml') is export { * }
+sub myhtml_tree_init(Tree, MyHTML) returns int32 is native('myhtml') is export { * }
 
 #| Clears resources before new parsing
 #|
@@ -715,7 +612,7 @@ sub myhtml_node_insert_before(Tree, TreeNode, TreeNode)
 #|
 #| @return myhtml_string_t* if successful, otherwise a NULL value
 sub myhtml_node_text_set(Tree, TreeNode, Blob, size_t, int32)
-    returns String
+    returns MyString
     is native('myhtml')
     is export
     { * }
@@ -731,7 +628,7 @@ sub myhtml_node_text_set(Tree, TreeNode, Blob, size_t, int32)
 #|
 #| @return myhtml_string_t* if successful, otherwise a NULL value
 sub myhtml_node_text_set_with_charef(Tree, TreeNode, Blob, size_t, int32)
-    returns String
+    returns MyString
     is native('myhtml')
     is export
     { * }
@@ -835,7 +732,7 @@ sub myhtml_node_text(TreeNode)
 #|
 #| @return myhtml_string_t* if exists, otherwise an NULL value
 sub myhtml_node_string(TreeNode)
-    returns String
+    returns MyString
     is native('myhtml')
     is export
     { * }
@@ -1249,7 +1146,7 @@ sub myhtml_encoding_detect_and_cut_bom(Blob, size_t, int32 is rw, Blob is rw, si
     is export
     { * }
 
-=head3 String
+=head3 MyString
 
 #| Init myhtml_string_t structure
 #|
@@ -1267,7 +1164,7 @@ sub myhtml_encoding_detect_and_cut_bom(Blob, size_t, int32 is rw, Blob is rw, si
 #| @param[in] data size. Set the size you want for char*
 #|
 #| @return char* of the size if successful, otherwise a NULL value
-sub myhtml_string_init(MCharAsync, size_t, String, size_t)
+sub myhtml_string_init(MCharAsync, size_t, MyString, size_t)
     returns Str
     is native('myhtml')
     is export
@@ -1281,7 +1178,7 @@ sub myhtml_string_init(MCharAsync, size_t, String, size_t)
 #| @param[in] data size. Set the new size you want for myhtml_string_t object
 #|
 #| @return char* of the size if successful, otherwise a NULL value
-sub myhtml_string_realloc(MCharAsync, size_t, String, size_t)
+sub myhtml_string_realloc(MCharAsync, size_t, MyString, size_t)
     returns Str
     is native('myhtml')
     is export
@@ -1291,7 +1188,7 @@ sub myhtml_string_realloc(MCharAsync, size_t, String, size_t)
 #| Equivalently: myhtml_string_length_set(str, 0);
 #|
 #| @param[in] myhtml_string_t*. See description for myhtml_string_init function
-sub myhtml_string_clean(String)
+sub myhtml_string_clean(MyString)
     is native('myhtml')
     is export
     { * }
@@ -1299,7 +1196,7 @@ sub myhtml_string_clean(String)
 #| Clean myhtml_string_t object. Equivalently: memset(str, 0, sizeof(myhtml_string_t))
 #|
 #| @param[in] myhtml_string_t*. See description for myhtml_string_init function
-sub myhtml_string_clean_all(String)
+sub myhtml_string_clean_all(MyString)
     is native('myhtml')
     is export
     { * }
@@ -1310,8 +1207,8 @@ sub myhtml_string_clean_all(String)
 #| @param[in] call free function for current object or not
 #|
 #| @return NULL if destroy_obj set true, otherwise a current myhtml_string_t object
-sub myhtml_string_destroy(String, bool)
-    returns String
+sub myhtml_string_destroy(MyString, bool)
+    returns MyString
     is native('myhtml')
     is export
     { * }
@@ -1321,7 +1218,7 @@ sub myhtml_string_destroy(String, bool)
 #| @param[in] myhtml_string_t*. See description for myhtml_string_init function
 #|
 #| @return char* if exists, otherwise a NULL value
-sub myhtml_string_data(String)
+sub myhtml_string_data(MyString)
     returns Str
     is native('myhtml')
     is export
@@ -1332,7 +1229,7 @@ sub myhtml_string_data(String)
 #| @param[in] myhtml_string_t*. See description for myhtml_string_init function
 #|
 #| @return data length
-sub myhtml_string_length(String)
+sub myhtml_string_length(MyString)
     returns size_t
     is native('myhtml')
     is export
@@ -1343,7 +1240,7 @@ sub myhtml_string_length(String)
 #| @param[in] myhtml_string_t*. See description for myhtml_string_init function
 #|
 #| @return data size
-sub myhtml_string_size(String)
+sub myhtml_string_size(MyString)
     returns size_t
     is native('myhtml')
     is export
@@ -1364,7 +1261,7 @@ sub myhtml_string_size(String)
 #| @param[in] you data to want assign
 #|
 #| @return assigned data if successful, otherwise a NULL value
-sub myhtml_string_data_set(String, Str)
+sub myhtml_string_data_set(MyString, Str)
     returns Str
     is native('myhtml')
     is export
@@ -1376,7 +1273,7 @@ sub myhtml_string_data_set(String, Str)
 #| @param[in] you size to want assign
 #|
 #| @return assigned size
-sub myhtml_string_size_set(String, size_t)
+sub myhtml_string_size_set(MyString, size_t)
     returns size_t
     is native('myhtml')
     is export
@@ -1388,7 +1285,7 @@ sub myhtml_string_size_set(String, size_t)
 #| @param[in] you length to want assign
 #|
 #| @return assigned length
-sub myhtml_string_length_set(String, size_t)
+sub myhtml_string_length_set(MyString, size_t)
     returns size_t
     is native('myhtml')
     is export

@@ -1,19 +1,24 @@
 unit class HTML::MyHTML::Collection does Positional;
 
 use HTML::MyHTML::Raw;
+
 use HTML::MyHTML::Node;
 use HTML::MyHTML::Status;
 use HTML::MyHTML::Tag;
 
-has Collection $!raw;
+has Collection $.raw;
 has Tree $!tree;
+
+method new($raw, :$tree) { self.bless(:$raw, :$tree) }
+
+submethod BUILD(:$!raw, :$!tree) {}
 
 method elems { $!raw.length }
 
 method bytes { $!raw.size }
 
 method AT-POS($n) {
-  HTML::MyHTML::Node.new :raw($!raw.list[$n]) :$!tree
+  HTML::MyHTML::Node.new(:raw($!raw.list[$n]) :$!tree)
 }
 
 method EXISTS-POS($n) { $!raw.list[$n]:exists }
@@ -34,12 +39,12 @@ method upto(Int $n) {
   }
 }
 
-method add($tree, Str $tag is rw) {
+method add(Str $tag is rw) {
   my $status; $!raw = do if Tag.{$tag}:exists {
-    myhtml_get_nodes_by_tag_id($tree, $!raw, Tag.{$tag}, $status);
+    myhtml_get_nodes_by_tag_id($!tree, $!raw, Tag.{$tag}, $status);
   } else {
     $tag .= encode;
-    myhtml_get_nodes_by_name($tree, $!raw, $tag, $tag.bytes, $status);
+    myhtml_get_nodes_by_name($!tree, $!raw, $tag, $tag.bytes, $status);
   }
   $status == 0 ?? return self !! return $status;
 }

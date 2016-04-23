@@ -9,7 +9,7 @@ use HTML::MyHTML::Tree;
 
 class HTML::MyHTML is export {
 
-  has MyHTML $!raw;
+  has $!raw;
   has HTML::MyHTML::Tree $.tree;
 
   submethod BUILD(:$threads = 1, :$queue-size = 4096) {
@@ -29,7 +29,7 @@ class HTML::MyHTML is export {
 
   multi method parse($html, :$enc) {
     myhtml_parse(
-      $!tree,
+      $!tree.raw,
       $enc // Enc.default,
       $html.encode,
       $html.encode.bytes

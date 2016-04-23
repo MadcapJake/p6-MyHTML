@@ -23,49 +23,46 @@ method tag { myhtml_tree_get_tag($!raw) }
 
 method tag-index { myhtml_tree_get_tag_index($!raw) }
 
-method document { myhtml_tree_get_document($!raw) }
+method document {
+  HTML::MyHTML::Node.new:
+    :raw(myhtml_tree_get_document($!raw))
+    :tree($!raw);
+}
 
-method node-html { myhtml_tree_get_node_html($!raw) }
+method html {
+  HTML::MyHTML::Node.new:
+    :raw(myhtml_tree_get_node_html($!raw))
+    :tree($!raw);
+}
 
-method node-body { myhtml_tree_get_node_body($!raw) }
+method body {
+  HTML::MyHTML::Node.new:
+    :raw(myhtml_tree_get_node_body($!raw))
+    :tree($!raw);
+}
+
+method first {
+  HTML::MyHTML::Node.new:
+    :raw(myhtml_node_first($!raw))
+    :tree($!raw);
+}
 
 method mchar(:$node-id) {
   with $node-id { myhtml_tree_get_mchar_node_id($!raw) }
   else { myhtml_tree_get_mchar($!raw) }
 }
 
+multi method print($node, Bool :include(:$i)!, Str :file(:$f), Int :increment(:$inc) = 0) {
+  myhtml_tree_print_by_node($!raw, $node.raw,
+    $f.defined && $f.IO.e ?? FILE.path($f) !! FILE.fd(1), $inc);
+}
+multi method print($node, Bool :exclude(:$e)!, Str :file(:$f), Int :increment(:$inc) = 0) {
+  myhtml_tree_print_node_childs($!raw, $node.raw,
+    $f.defined && $f.IO.e ?? FILE.path($f) !! FILE.fd(1), $inc);
+}
 multi method print($node, Str :$file) {
-  myhtml_tree_print_node(
-    $!raw,
-    ($node ~~ HTML::MyHTML::Node) ?? $node.raw !! $node,
-    $file.defined && $file.IO.e ?? FILE.path($file) !! FILE.fd(1)
-  );
-}
-multi method print(
-  $node,
-  Bool :all(:$a)! where $a.so,
-  Str :$file,
-  Int :increment(:$inc) = 0
-) {
-  myhtml_tree_print_by_node(
-    $!raw,
-    $node,
-    $file.defined && $file.IO.e ?? FILE.path($file) !! FILE.fd(1),
-    $inc
-  );
-}
-multi method print(
-  $node,
-  :all(:$a)! where not $a.so,
-  Str :$file,
-  Int :increment(:$inc) = 0
-) {
-  myhtml_tree_print_node_childs(
-    $!raw,
-    $node,
-    $file.defined && $file.IO.e ?? FILE.path($file) !! FILE.fd(1),
-    $inc
-  );
+  myhtml_tree_print_node($!raw, $node.raw,
+    $file.defined && $file.IO.e ?? FILE.path($file) !! FILE.fd(1));
 }
 
 method root { myhtml_node_first($!raw) }
@@ -81,6 +78,6 @@ method nodes(Str $tag, HTML::MyHTML::Collection :collection(:$co)) {
   }
   # TODO: Implement MyHTML X exception classes
   if $status == 0 {
-    return HTML::MyHTML::Collection.new: :raw($coll) :tree($!raw)
+    return HTML::MyHTML::Collection.new($coll):tree($!raw)
   } else { return $status }
 }
