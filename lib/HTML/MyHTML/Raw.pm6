@@ -24,7 +24,7 @@ class MyHTML is repr<CPointer> is export {}
 class FILE is repr<CPointer> is export {
   sub fdopen(int64, Str) returns FILE is native { * }
   sub fopen(Str, Str) returns FILE is native { * }
-  sub setvbuf(FILE, Blob, int64) returns int64 is native { * }
+  sub setvbuf(FILE, Blob, size_t) returns int64 is native { * }
   method fd(Int $fd) {
     my $fh = fdopen($fd, "w+");
     setvbuf($fh, Blob, 2) if $fd == 1;
